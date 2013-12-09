@@ -1,0 +1,32 @@
+NextGEN Pro
+by Photocrati Media
+
+= V1.0.6 - 08.21.2013 =
+Fixed:   Use settings class compatible with multisite
+Fixed:   Fixed PHP notices for invalid index in wp-admin
+Fixed:   Fixed invalid use of wp_register_script/wp_enqueue_script notices
+Changed: Comments: return  in comment_post_redirect filter
+Fixed:   Ensure that we don't check for updates until our check time has expired
+
+= V1.0.4 - 08.09.2013 =
+NEW:     All Pro display types' styles can be customized by "Other Options -> Styles"
+Changed: NextGEN Pro requires NextGEN Gallery 2.0.7 or later
+Fixed:   Pro Slideshows and Horizontal Filmstrip are fully responsive
+Fixed:   NextGEN Pro is loaded after NextGEN Gallery 2.0.x
+Fixed:   Pro Lightbox CSS is compatible with many other themes
+Fixed:   Incompatibility with WPMUDEV's Membership plugin
+Fixed:   Fix autoupdate cache not being properly managed when the server would return 0 updates
+Fixed:   Pro Album styling issues in some themes such as 2013
+
+= V1.0 - 07.30.2013 =
+NEW:     Added Pro Lightbox, with social sharing and commenting functionality
+NEW:     Added Pro Blog Style display type
+NEW:     Added Pro Thumbnail Grid Style display type
+NEW:     Added Pro List & Grid Album display types
+NEW:     Added Pro Film display type
+NEW:     Added Galleria Display Type Engine
+NEW:     Added Pro Horizontal Filmstrip display type
+NEW:     Added Pro Slideshow display type
+NEW:     Added Pro Masonry display type
+Changed: Since Beta #1, we're using a new Installer and Settings Manager implementation
+Changed: Since Beta #1, we cache the final rendering output of display galleries
