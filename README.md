@@ -65,3 +65,7 @@ Eventually you'll be able to push to a production environment by issuing a comma
 
 * `web` - the remote, in that case, this is the production server
 * `master` - the same branch we use for development
+
+Or similarly to push to a dev server:
+
+        $ git push dev master
