@@ -14,6 +14,8 @@
 }
 .nextgen_pro_grid_album .image_container img {
 	border: 0;
+    max-width: 100%;
+    height: auto;
 }
 .nextgen_pro_grid_album .image_description {
     display: none;

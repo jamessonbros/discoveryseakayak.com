@@ -25,7 +25,6 @@
             <?php echo_h($img->description) ?>
         </p>
         <?php endif ?>
-
         <script type="text/javascript">window.location.href = '<?php echo $lightbox_url; ?>';</script>
     </body>
 </html>

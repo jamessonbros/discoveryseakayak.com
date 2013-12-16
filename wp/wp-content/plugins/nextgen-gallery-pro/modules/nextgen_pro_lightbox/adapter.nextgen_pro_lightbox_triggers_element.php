@@ -78,7 +78,7 @@ class A_NextGen_Pro_Lightbox_Triggers_Element extends Mixin
 				{
 					$params = array(
 						'context' => 'gallery', 
-						'context-id' => isset($displayed_gallery->transient_id) ? $displayed_gallery->transient_id : FALSE,
+						'context-id' => isset($displayed_gallery->transient_id) ? $displayed_gallery->transient_id : $displayed_gallery->id(),
 			            'class' => 'ngg-trigger'
 					);
 					

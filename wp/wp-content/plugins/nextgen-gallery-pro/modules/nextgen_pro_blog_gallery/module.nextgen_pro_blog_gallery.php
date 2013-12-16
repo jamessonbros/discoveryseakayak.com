@@ -13,7 +13,7 @@ class M_NextGen_Pro_Blog_Gallery extends C_Base_Module
 			NEXTGEN_PRO_BLOG_GALLERY_MODULE_NAME,
 			'NextGEN Pro Blog Gallery',
 			"Provides Photocrati's Blog Style gallery type for NextGEN Gallery",
-            '0.4',
+            '0.6',
 			'http://www.nextgen-gallery.com',
 			'Photocrati Media',
 			'http://www.photocrati.com',
@@ -55,16 +55,17 @@ class M_NextGen_Pro_Blog_Gallery extends C_Base_Module
 			'A_NextGen_Pro_Blog_Dynamic_Styles'
 		);
 
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_Blog_Form',
-			$this->module_id
-		);
-
-        $this->get_registry()->add_adapter(
-            'I_Form_Manager',
-            'A_NextGen_Pro_Blog_Forms'
-        );
+        if (is_admin()) {
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Blog_Form',
+                $this->module_id
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Blog_Forms'
+            );
+        }
 	}
 }
 

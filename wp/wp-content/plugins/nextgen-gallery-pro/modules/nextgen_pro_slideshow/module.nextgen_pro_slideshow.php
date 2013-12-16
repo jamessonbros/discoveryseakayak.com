@@ -17,7 +17,7 @@ class M_NextGen_Pro_Slideshow extends C_Base_Module
 			'photocrati-nextgen_pro_slideshow',
 			'NextGen Pro Slideshow',
 			"Provides Photocrati's Slideshow Gallery Type",
-            '0.4',
+            '0.6',
 			'http://www.photocrati.com',
 			'Photocrati Media',
 			'http://www.photocrati.com',
@@ -56,17 +56,18 @@ class M_NextGen_Pro_Slideshow extends C_Base_Module
 			'A_NextGen_Pro_Slideshow_Mapper'
 		);
 
-		// Provides a display settings form
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_Slideshow_Form',
-			$this->module_id
-		);
-
-        $this->get_registry()->add_adapter(
-            'I_Form_Manager',
-            'A_NextGen_Pro_Slideshow_Forms'
-        );
+        if (is_admin()) {
+            // Provides a display settings form
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Slideshow_Form',
+                $this->module_id
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Slideshow_Forms'
+            );
+        }
 	}
 }
 

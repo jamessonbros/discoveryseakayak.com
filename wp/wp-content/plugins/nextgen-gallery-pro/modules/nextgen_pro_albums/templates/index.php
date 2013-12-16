@@ -33,8 +33,8 @@ $this->include_template('photocrati-nextgen_gallery_display#container/before');
             </a>
             <a href="<?php echo esc_attr($entity->link)?>"
                title="<?php echo esc_attr($entity->title); ?>"
-               class="caption_link" ><?php echo_h($entity->title)?></a>
-            <div class="image_description"><?php echo_h($entity->galdesc)?></div>
+               class="caption_link" ><?php echo_safe_html($entity->title) ?></a>
+            <div class="image_description"><?php echo_safe_html($entity->galdesc) ?></div>
             <br class="clear"/>
         </div>
 	<?php $i++; ?>

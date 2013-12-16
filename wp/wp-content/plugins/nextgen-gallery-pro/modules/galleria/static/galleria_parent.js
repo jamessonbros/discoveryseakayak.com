@@ -20,7 +20,11 @@
                 style: 'visibility: hidden',
                 onload: 'this.style.visibility="visible"'
             });
-            $iframe.css('margin', '0px');
+            $iframe.css({
+                'margin': '0px',
+                'padding': '0px',
+                'border': 'none'
+            });
             $this.prepend($iframe);
         });
     });

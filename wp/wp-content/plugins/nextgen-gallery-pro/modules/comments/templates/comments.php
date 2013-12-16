@@ -140,6 +140,7 @@ function nextgen_comments_prev_link($label = '')
 ?>
 <?php // iOS4 cannot scroll elements in iframes, so we use iScroll4 to handle it for us. It requires a wrapper with an id ?>
 <div id='comments-scroll-wrapper'>
+<div id='comments-image-share-icons' class="galleria-image-share-icons"></div>
 <div id="comments" class="comments-area scrollable">
 
     <a href='javascript:void(0)' class='comments-toggle' title='<?php echo __('Hide comments'); ?>'>

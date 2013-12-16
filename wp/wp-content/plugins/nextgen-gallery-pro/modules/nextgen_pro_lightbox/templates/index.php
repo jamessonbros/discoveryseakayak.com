@@ -2,11 +2,8 @@
 <html>
     <head>
         <meta name='viewport' content='width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no'>
-        <?php
-        wp_print_styles();
-        ?>
         <style type='text/css'>
-            html, body, div.galleria {
+            html, body, #galleria {
                 height: 100%;
                 width: 100%;
                 margin: 0px;
@@ -20,21 +17,17 @@
                 }
             }
         </script>
+        <?php wp_print_styles(); ?>
+        <?php wp_print_head_scripts(); ?>
     </head>
-    <body onUnload="close_lightbox_parent()">
-        <?php echo $galleria; ?>
-        <?php wp_print_scripts(); ?>
+    <body onUnload="close_lightbox_parent();">
+        <!-- tabindex is necessary for some browsers to focus #galleria after loading -->
+        <div id='galleria' tabindex='1'></div>
         <script type='text/javascript'>
-            // override the dimension set by galleria_parent.js; the lightbox needs full width
-            jQuery(document).ready(function($) {
-                if (top.nplModalRouted) {
-                    $('.galleria iframe').each(function() {
-                        $(this).attr({width: '100%', height: '100%'});
-                    });
-                }
-            });
-
-            var display_settings = <?php echo json_encode($display_settings); ?>;
+            (function($) {
+                window.lightbox_settings = <?php echo json_encode($lightbox_settings); ?>;
+                window.Galleria_Instance.create('<?php echo $displayed_gallery_id; ?>');
+            })(jQuery);
         </script>
     </body>
 </html>

@@ -14,6 +14,10 @@ class A_NextGen_Pro_Album_Form extends Mixin_Display_Type_Form
             $this->object->get_static_url('photocrati-nextgen_pro_albums#settings.js'),
             array('jquery.nextgen_radio_toggle')
         );
+		$atp = $this->object->get_registry()->get_utility('I_Attach_To_Post_Controller');
+	
+	if ($atp != null && $atp->has_method('mark_script')) {
+		$atp->mark_script('nextgen_pro_albums_settings_script');	}
     }
 
     /**
@@ -23,6 +27,7 @@ class A_NextGen_Pro_Album_Form extends Mixin_Display_Type_Form
     {
         return array(
             'thumbnail_override_settings',
+            'nextgen_pro_albums_display_type',
             'nextgen_pro_albums_caption_color',
             'nextgen_pro_albums_caption_size',
             'nextgen_pro_albums_border_color',
@@ -30,6 +35,27 @@ class A_NextGen_Pro_Album_Form extends Mixin_Display_Type_Form
             'nextgen_pro_albums_background_color',
             'nextgen_pro_albums_padding',
             'nextgen_pro_albums_spacing'
+        );
+    }
+
+    /*
+     * Let users choose which display type galleries inside albums use
+     */
+    function _render_nextgen_pro_albums_display_type_field($display_type)
+    {
+        $mapper = $this->object->get_registry()->get_utility('I_Display_Type_Mapper');
+        $types = array();
+        foreach ($mapper->find_by_entity_type('image') as $dt) {
+            $types[$dt->name] = $dt->title;
+        }
+
+        return $this->_render_select_field(
+            $display_type,
+            'gallery_display_type',
+            'Display galleries as',
+            $types,
+            $display_type->settings['gallery_display_type'],
+            'How would you like galleries to be displayed?'
         );
     }
 

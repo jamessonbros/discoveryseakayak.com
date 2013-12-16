@@ -5,7 +5,9 @@ var defaults = $.extend(Galleria.configure.options, {
 	carousel:	false,
 	thumbnails:	false,
 	autoplay:	true,
-	showInfo:	false
+	showInfo:	false,
+	fullscreenDoubleTap: false,
+	trueFullscreen: false
 });
 
 // Set the image margin to the same width as the border size
@@ -25,6 +27,8 @@ Galleria.addTheme({
     defaults: defaults,
     init: function(options) {
         Galleria.requires(1.28, 'This version of Classic theme requires Galleria 1.2.8 or later');
+    
+    this._fullscreen._enter = function (t) {};
 
 		// Provides a function which sets the width of an image
 		this.set_image_width = function($img, width) {
@@ -226,7 +230,7 @@ Galleria.addTheme({
 		}));
 
         this.bind('loadfinish', this.proxy(function (event) {
-            var self = this
+            var self = this;
             var gallery_id = window.Galleria_Instance.displayed_gallery.ID;
             top.jQuery('#displayed_gallery_' + gallery_id).siblings('div.ngg-trigger-buttons').each(function() {
                 top.jQuery('body').trigger('nplmodal.update_image_id', [jQuery(this).find('i'), $(self.getData(self.getIndex()).original).data('image-id')]);

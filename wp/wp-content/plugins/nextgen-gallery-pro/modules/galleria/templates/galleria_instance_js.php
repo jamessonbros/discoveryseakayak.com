@@ -25,7 +25,12 @@
 
 		configure_galleria: function() {
 			// Parse numeric and boolean values from strings
-			var settings = this.displayed_gallery.display_settings;
+			//
+			// NOTE: .extend() is important! 'settings = displayed_gallery.settings' will
+			// create a 'pointer' -- changes to this 'settings' var will alter the
+			// displayed gallery settings. This causes havoc with fields like transition
+			// and slideshow speed.
+			var settings = $.extend({}, this.displayed_gallery.display_settings);
 			for (var index in settings) {
 
 				// Parse numbers
@@ -42,80 +47,85 @@
 			settings.transition_speed = settings.transition_speed * 1000;
 			settings.slideshow_speed = settings.slideshow_speed * 1000;
 
-            // the lightbox will always occupy as much of the screen as it can
-            if (top.nplModalRouted && top.nplModalRouted.is_open()) {
-                settings.width = 'auto';
+            var calculateHeight = function (settings) {
+                // Calculate stage width
+                var width = this.$frame.width();
+                var parWidth = this.$frame.parent().width();
+                var maxWidth = settings.width;
+		              
+                // Convert common settings
+                if (settings.width_unit == '%') {
+                    maxWidth = Math.round(parWidth * (settings.width / 100));
+                }
+		              
+                if (parWidth > 0 && parWidth < maxWidth) {
+                    maxWidth = parWidth;
+                }
+		              
+                width = maxWidth;
+		              
+                this.$frame.width(width);
 
-            } else {
-            		var calculateHeight = function (settings) {
-		              // Calculate stage width
-		              var width = this.$frame.width();
-		              var parWidth = this.$frame.parent().width();
-		              var maxWidth = settings.width;
-		              
-			            // Convert common settings
-			            if (settings.width_unit == '%') {
-			                maxWidth = Math.round(parWidth * (settings.width / 100));
-			            }
-		              
-		              if (parWidth > 0 && parWidth < maxWidth) {
-		              	maxWidth = parWidth;
-		              }
-		              
-		              width = maxWidth;
-		              
-	                this.$frame.width(width);
-
-		              // Calculate height using aspect ratio of device/browser
-		              var aspect_ratio = this.$parent.width()/this.$parent.height();
-		              if (typeof(settings.aspect_ratio) != 'undefined' && settings.aspect_ratio != 0 ) {
-		                  aspect_ratio = this.displayed_gallery.display_settings.aspect_ratio;
+                // Calculate height using aspect ratio of device/browser
+                var aspect_ratio = this.$parent.width()/this.$parent.height();
+                if (typeof(settings.aspect_ratio) != 'undefined' && settings.aspect_ratio != 0 ) {
+                    aspect_ratio = this.displayed_gallery.display_settings.aspect_ratio;
 		                  
-		                  if (!parseFloat(aspect_ratio))
-		                  {
-		                  	if (settings.aspect_ratio_computed && parseFloat(settings.aspect_ratio_computed))
-		                  	{
-		                  		aspect_ratio = settings.aspect_ratio_computed;
-		                  	}
-		                  	else
-		                  	{
-		                  		aspect_ratio = 1.5;
-		                  	}
-		                  }
-		              }
-		              var frame_height = ((width - 20)/aspect_ratio);
+                    if (!parseFloat(aspect_ratio))
+                    {
+                        if (settings.aspect_ratio_computed && parseFloat(settings.aspect_ratio_computed))
+                        {
+                            aspect_ratio = settings.aspect_ratio_computed;
+                        }
+                        else
+                        {
+                            aspect_ratio = 1.5;
+                        }
+                    }
+                    else
+                    {
+                        aspect_ratio = parseFloat(aspect_ratio);
+                    }
+                }
+                var frame_height = ((width - 20)/aspect_ratio);
 
-		              if (typeof(this.displayed_gallery.display_settings.thumbnail_height) != 'undefined')
-		              {
-		                  frame_height += this.displayed_gallery.display_settings.thumbnail_height;
-		              }
+                if (typeof(this.displayed_gallery.display_settings.thumbnail_height) != 'undefined')
+                {
+                    var thumb_height = this.displayed_gallery.display_settings.thumbnail_height;
+		              		
+                    if (typeof(thumb_height) === 'string')
+                    {
+                        thumb_height = parseFloat(thumb_height);
+                    }
+		              		
+                    frame_height += thumb_height;
+                }
 
-		              frame_height += 20;
+                frame_height += 20;
 
-		              var caption = this.displayed_gallery.display_settings.caption_class;
-		              if (caption == 'caption_above_stage' || caption == 'caption_below_stage')
-		              {
-		                  frame_height += 52;
-		              }
+                var caption = this.displayed_gallery.display_settings.caption_class;
+                if (caption == 'caption_above_stage' || caption == 'caption_below_stage')
+                {
+                    frame_height += 52;
+                }
 
-		              this.$frame.height(frame_height);
-		              this.$frame.css('margin', '0 auto');
-            		};
+                this.$frame.height(frame_height);
+                this.$frame.css('margin', '0 auto');
+            };
             		
-            		var galleriaZ1 = this;
+            var galleriaZ1 = this;
             		
-            		calculateHeight.call(galleriaZ1, settings);
+            calculateHeight.call(galleriaZ1, settings);
             		
-            		var elems = $(window);
+            var elems = $(window);
             		
-            		if (window.parent != null && window.parent != window) {
-            			elems = elems.add($(window.parent));
-            		}
-				        		
-				        elems.on('resize orientationchange onfullscreenchange onmozfullscreenchange onwebkitfullscreenchange', function (event) {
-            			calculateHeight.call(galleriaZ1, settings);
-				        });
+            if (window.parent != null && window.parent != window) {
+                elems = elems.add($(window.parent));
             }
+				        		
+            elems.on('resize orientationchange onfullscreenchange onmozfullscreenchange onwebkitfullscreenchange', function (event) {
+                calculateHeight.call(galleriaZ1, settings);
+            });
 
 			Galleria.loadTheme(this.displayed_gallery.display_settings.theme);
 			Galleria.configure($.extend(settings, {

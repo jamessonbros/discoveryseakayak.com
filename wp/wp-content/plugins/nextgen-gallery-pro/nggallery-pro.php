@@ -5,7 +5,7 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 /*
  * Plugin Name: NextGEN Pro by Photocrati
  * Description: The "Pro" upgrade  for NextGEN Gallery. Enjoy beautiful new gallery displays and a fullscreen, responsive Pro Lightbox with social sharing and commenting.
- * Version: 1.0.6
+ * Version: 1.0.10
  * Plugin URI: http://www.nextgen-gallery.com
  * Author: Photocrati Media
  * Author URI: http://www.photocrati.com
@@ -14,11 +14,14 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 
 class NextGEN_Gallery_Pro
 {
+	var $_minimum_ngg_version = '2.0.37';
+
     // Initialize the plugin
     function __construct()
     {
         define('NEXTGEN_GALLERY_PRO_PLUGIN_BASENAME', plugin_basename(__FILE__));
 		define('NEXTGEN_GALLERY_PRO_MODULE_URL', plugins_url(path_join(basename(dirname(__FILE__)), 'modules')));
+		define('NEXTGEN_GALLERY_PRO_VERSION', '1.0.10');
 
 		if (class_exists('C_Component_Registry') && did_action('load_nextgen_gallery_modules')) {
 			$this->load_product(C_Component_Registry::get_instance());
@@ -43,11 +46,18 @@ class NextGEN_Gallery_Pro
 
     function _register_hooks()
     {
+        add_action('activate_' . NEXTGEN_GALLERY_PRO_PLUGIN_BASENAME, array(get_class(), 'activate'));
         add_action('deactivate_' . NEXTGEN_GALLERY_PRO_PLUGIN_BASENAME, array(get_class(), 'deactivate'));
         
         // hooks for showing available updates
         add_action('after_plugin_row_' . NEXTGEN_GALLERY_PRO_PLUGIN_BASENAME, array(get_class(), 'after_plugin_row'));
-        add_action('admin_notices', array(get_class(), 'admin_notices'));
+        add_action('admin_notices', array(&$this, 'admin_notices'));
+    }
+
+    static function activate()
+    {
+        // admin_notices will check for this later
+        update_option('photocrati_pro_recently_activated', 'true');
     }
 
     static function deactivate()
@@ -118,20 +128,41 @@ class NextGEN_Gallery_Pro
     	}
     }
     
-    static function admin_notices() 
+    function admin_notices()
     {
-    	if (class_exists('C_Page_Manager')) {
+		if (!defined('NEXTGEN_GALLERY_PLUGIN_VERSION'))
+        {
+            $message = 'Please install &amp; activate <a href="http://wordpress.org/plugins/nextgen-gallery/" target="_blank">NextGEN Gallery</a> to allow NextGEN Gallery Pro to work.';
+            echo '<div class="updated"><p>' . $message . '</p></div>';
+        }
+		else if (version_compare(NEXTGEN_GALLERY_PLUGIN_VERSION, $this->_minimum_ngg_version) == -1) {
+			$ngg_version 	 = NEXTGEN_GALLERY_PLUGIN_VERSION;
+			$ngg_pro_version = NEXTGEN_GALLERY_PRO_VERSION;
+			$upgrade_url 	 = admin_url('/plugin-install.php?tab=plugin-information&plugin=nextgen-gallery&section=changelog&TB_iframe=true&width=640&height=250');
+			$message = "NextGEN Gallery {$ngg_version} is incompatible with NextGEN Pro {$ngg_pro_version}. Please update <a class='thickbox' href='{$upgrade_url}'>NextGEN Gallery</a> to version {$this->_minimum_ngg_version} or higher.";
+			echo '<div class="updated"><p>' . $message . '</p></div>';
+		}
+
+        if (delete_option('photocrati_pro_recently_activated'))
+        {
+            $message = 'To activate the NextGEN Gallery Pro Lightbox please go to Gallery > Other Options > Lightbox Effects.';
+            echo '<div class="updated"><p>' . $message . '</p></div>';
+        }
+
+    	if (class_exists('C_Page_Manager'))
+        {
     		$pages = C_Page_Manager::get_instance();
 
-			if (isset($_REQUEST['page'])) {
-				if (in_array($_REQUEST['page'], array_keys($pages->get_all())) || preg_match("/^nggallery-/", $_REQUEST['page']) || $_REQUEST['page'] == 'nextgen-gallery') {
-
-					if (self::has_updates()) {
+			if (isset($_REQUEST['page']))
+            {
+				if (in_array($_REQUEST['page'], array_keys($pages->get_all()))
+                ||  preg_match("/^nggallery-/", $_REQUEST['page'])
+                ||  $_REQUEST['page'] == 'nextgen-gallery')
+                {
+					if (self::has_updates())
+                    {
 						$update_message = self::_get_update_message();
-
-						echo '<div class="updated">
-				    <p>' . $update_message . '</p>
-				</div>';
+						echo '<div class="updated"><p>' . $update_message . '</p></div>';
 					}
 				}
 			}

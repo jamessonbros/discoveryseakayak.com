@@ -13,6 +13,12 @@ class A_NextGen_Pro_Thumbnail_Grid_Form extends Mixin_Display_Type_Form
             $this->object->get_display_type_name() . '-js',
             $this->object->get_static_url('photocrati-nextgen_pro_thumbnail_grid#settings.js')
         );
+	
+				$atp = $this->object->get_registry()->get_utility('I_Attach_To_Post_Controller');
+	
+				if ($atp != null && $atp->has_method('mark_script')) {
+					$atp->mark_script($this->object->get_display_type_name() . '-js');
+				}
     }
 
 
@@ -27,6 +33,7 @@ class A_NextGen_Pro_Thumbnail_Grid_Form extends Mixin_Display_Type_Form
             'nextgen_pro_thumbnail_grid_border_size',
             'nextgen_pro_thumbnail_grid_border_color',
 			'nextgen_pro_thumbnail_grid_spacing',
+			'nextgen_pro_thumbnail_grid_number_of_columns',
         );
     }
 
@@ -71,6 +78,17 @@ class A_NextGen_Pro_Thumbnail_Grid_Form extends Mixin_Display_Type_Form
 			'spacing',
 			'Spacing',
 			$display_type->settings['spacing']
+		);
+	}
+
+	function _render_nextgen_pro_thumbnail_grid_number_of_columns_field($display_type)
+	{
+		return $this->_render_number_field(
+			$display_type,
+			'number_of_columns',
+			'Number of columns to display',
+			$display_type->settings['number_of_columns'],
+            'An empty or zero in this field will use a responsive layout'
 		);
 	}
 

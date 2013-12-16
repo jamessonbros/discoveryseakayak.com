@@ -13,6 +13,12 @@ class A_NextGen_Pro_Horizontal_Filmstrip_Form extends A_NextGen_Pro_Slideshow_Fo
             $this->object->get_display_type_name() . '-js',
             $this->get_static_url('photocrati-nextgen_pro_horizontal_filmstrip#settings.js')
         );
+	
+				$atp = $this->object->get_registry()->get_utility('I_Attach_To_Post_Controller');
+	
+				if ($atp != null && $atp->has_method('mark_script')) {
+					$atp->mark_script($this->object->get_display_type_name() . '-js');
+				}
     }
 
     /**

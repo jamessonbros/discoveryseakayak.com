@@ -9,3 +9,4 @@ wp-cli*
 /wp/media/backup*
 /wp/wp-content/backup*
 /wp/wp-content/gallery/*
+/wp/wp-content/ngg_styles

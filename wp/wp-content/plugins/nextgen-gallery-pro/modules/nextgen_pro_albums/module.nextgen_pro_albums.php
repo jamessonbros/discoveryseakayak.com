@@ -17,7 +17,7 @@ class M_NextGen_Pro_Albums extends C_Base_Module
 			'photocrati-nextgen_pro_albums',
 			'NextGEN Pro Albums',
 			'Provides Photocrati styled albums for NextGEN Gallery',
-            '0.4',
+            '0.6',
 			'http://www.nextgen-gallery.com',
 			'Photocrati Media',
 			'http://www.photocrati.com',
@@ -84,23 +84,23 @@ class M_NextGen_Pro_Albums extends C_Base_Module
 			'A_NextGen_Pro_Album_Routes'
 		);
 
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_List_Album_Form',
-			NEXTGEN_PRO_LIST_ALBUM
-		);
-
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_Grid_Album_Form',
-			NEXTGEN_PRO_GRID_ALBUM
-		);
-
-        $this->get_registry()->add_adapter(
-            'I_Form_Manager',
-            'A_NextGen_Pro_Album_Forms'
-        );
-	}
+        if (is_admin()) {
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_List_Album_Form',
+                NEXTGEN_PRO_LIST_ALBUM
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Grid_Album_Form',
+                NEXTGEN_PRO_GRID_ALBUM
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Album_Forms'
+            );
+        }
+    }
 }
 
 new M_NextGen_Pro_Albums;

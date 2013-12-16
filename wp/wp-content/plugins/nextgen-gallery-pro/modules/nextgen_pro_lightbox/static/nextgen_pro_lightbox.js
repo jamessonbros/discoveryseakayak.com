@@ -7,6 +7,7 @@
         speed: 'slow',        // see jQuery docs for setting
         timeout: 60,          // measured in seconds
         timeout_message: 'Waited too long', // error to display after the timeout setting
+        error_message: 'Error loading',
         error_timeout: 3      // how long to display errors before closing
     };
 
@@ -29,6 +30,10 @@
             var btn_close = $("<div id='npl_button_close' class='hidden'>[ x ]</div>");
             var content = $("<iframe src='' id='npl_content' frameborder='0' marginheight='0' marginwidth='0' scrolling='no' allowfullscreen='yes' webkitallowfullscreen='yes' mozallowfullscreen='yes'></iframe>");
 
+            overlay.css({background: window.nplModalSettings.background_color});
+            overlay2.css({background: window.nplModalSettings.background_color});
+            spinner.css({color: window.nplModalSettings.icon_color});
+
             $('body').append(overlay);
             $('body').append(overlay2);
             $('body').append(wrapper);
@@ -39,6 +44,7 @@
 
             methods.configure(parameters);
             methods.resize_modal();
+            methods.bind_images();
             methods.set_events();
             methods.ios.init();
 
@@ -50,10 +56,38 @@
             options = $.extend(defaults, parameters);
         },
 
-        // establishes bindings of events to actions
-        set_events: function() {
-            // handles click/touch events on images
-            $('body').on('click', '.nextgen_pro_lightbox', function (event) {
+        bind_images: function() {
+            // in order to handle ajax-pagination events this method is called every time the 'refreshed' signal
+            // is emitted. For Galleria to process images we store the selector in nplModalRouted
+            var selector = nextgen_lightbox_filter_selector($, $(".nextgen_pro_lightbox"));
+
+//            // Modify the selector to exclude any Photocrati Lightboxes
+            var new_selector = [];
+            for (var index=0; index < selector.length; index++) {
+                var el = selector[index];
+                if (!$(el).hasClass('photocrati_lightbox_always') && !$(el).hasClass('decoy')) {
+                      new_selector.push(el);
+                }
+            }
+
+            window.nplModalRouted.selector = selector = $(new_selector);
+
+//            if (nextgen_lightbox_settings.context == 'all_images') {
+//
+//                selector.each(function(){
+//                    $(this).off('click');
+//                    $(this).off('mousedown');
+//                    $(this).off('mouseup');
+//                });
+//            }
+
+            selector.on('click', function (event) {
+
+                // pass these by
+                if ($.inArray($(this).attr('target'), ['_blank', '_parent', '_top']) > -1) {
+                    return;
+                }
+
                 event.stopPropagation();
                 event.preventDefault();
 
@@ -63,33 +97,58 @@
                     // cache the current scroll position
                     scroll_top = $(document).scrollTop();
 
-                    if (window.nplModalRouted && $(this).data('nplmodal-gallery-id')) {
+                    var show_comments = $(this).data('nplmodal-show-comments') ? $(this).data('nplmodal-show-comments') : 0;
 
-                        var show_comments = $(this).data('nplmodal-show-comments') ? $(this).data('nplmodal-show-comments') : 0;
+                    // Both gallery and image-id can be !, but not at the same time
+                    var gallery_transient = $(this).data('nplmodal-gallery-id') ? $(this).data('nplmodal-gallery-id') : '!';
 
-                        // !, for a nought-image-id; we just start with the first image if no nplmodal-image-id is given
-                        var image_id = $(this).data('nplmodal-image-id') ? $(this).data('nplmodal-image-id') : ($(this).data('image-id') ? $(this).data('image-id') : '!');
+                    var image_id = '!';
+                    if ($(this).data('nplmodal-image-id')) {
+                        image_id = $(this).data('nplmodal-image-id');
+                    } else if ($(this).data('image-id')) {
+                        image_id = $(this).data('image-id');
+                    } else if (gallery_transient == '!') {
+                        image_id = $(this).attr('href');
+                    }
 
-                        // NextGEN images coming from random galleries should also pass image-id = ! - there is no
-                        // guarantee that the images given to us by the controller will be the same that appear now
-                        var gallery_id = window.nplModalRouted.get_id_from_transient($(this).data('nplmodal-gallery-id'));
+                    if (jQuery.browser.mobile) {
+                        methods.enter_fullscreen();
+                    }
 
-                        if (jQuery.browser.mobile) {
-                            methods.enter_fullscreen();
-                        }
-
-                        if (window.nplModalRouted.front_page_pushstate($(this).data('nplmodal-gallery-id'), $(this).data('image-id'))) {
-                            var slug = window.nplModalRouted.get_slug($(this).data('nplmodal-gallery-id'));
-                            if ($.inArray(galleries['gallery_' + gallery_id].source, ['random', 'random_images']) != -1) {
-                                slug = $(this).data('nplmodalGalleryId');
+                    // widget galleries are fleeting and temporary -- don't pass an image id
+                    if (gallery_transient != '!') {
+                        var slug = window.nplModalRouted.get_slug(gallery_transient);
+                        if (typeof slug != 'undefined' && slug != null) {
+                            if (slug.toString().indexOf('widget-ngg-images-') !== -1) {
+                                image_id = '!';
                             }
-                            window.nplModalRouted.navigate(window.nplModalRouted.router_slug + '/' + slug + '/' + image_id + '/' + show_comments, true);
                         }
+                    }
+
+                    // open the pro-lightbox manually
+                    if (gallery_transient == '!' || window.nplModalSettings.enable_routing == '0') {
+                        // set this so we can tell Galleria which image to display first
+                        window.nplModalRouted.image_id = image_id;
+                        methods.open_modal(window.nplModalSettings.gallery_url.replace('{gallery_id}', gallery_transient));
+
+                    // open the pro-lightbox through our backbone.js router
                     } else {
-                        methods.open_modal($(this).attr('src'));
+                        window.nplModalRouted.front_page_pushstate(gallery_transient, image_id);
+                        var gallery_id = window.nplModalRouted.get_id_from_transient(gallery_transient);
+                        window.nplModalRouted.navigate(
+                            window.nplModalRouted.router_slug + '/' + slug + '/' + image_id + '/' + show_comments,
+                            {trigger: true,
+                                replace: false
+                            }
+                        );
                     }
                 }
             });
+        },
+
+        // establishes bindings of events to actions
+        set_events: function() {
+            $(window).on('refreshed', methods.bind_images);
 
             // some display types (pro-slideshow for example) require their trigger buttons image-id
             // attribute to be updated as they display. also because our galleries may be in an iframe
@@ -100,7 +159,7 @@
             });
 
             // keep the display "responsive" by adjusting its dimensions when the browser resizes
-            $(window).on('resize orientationchange onfullscreenchange onmozfullscreenchange onwebkitfullscreenchange', function (event) {
+            $(window).on('resize orientationchange fullscreenchange mozfullscreenchange webkitfullscreenchange', function (event) {
                 if (methods.is_open()) {
                     window.scrollTo(0,0);
                     methods.resize_modal();
@@ -138,13 +197,19 @@
             // disable our watchdog timer so it doesn't kill anything
             iframe_loading = false;
 
+            // shutdown if #galleria doesn't exist -- the server or net connection have failed us
+            if ($('#npl_content').contents().find('#galleria').length == 0) {
+                methods.error(options.error_message);
+                return;
+            }
+
             methods.resize_modal();
             $('#npl_spinner, #npl_button_close').addClass('hidden');
             $('#npl_content').fadeTo(options.speed, 1);
 
             if (window.nplModalRouted) {
                 // requires tabindex be set on the #galleria element; Galleria won't have key support without this
-                $('#npl_content').contents().find('.galleria iframe').contents().find('#galleria').focus()
+                $('#npl_content').contents().find('#galleria').focus()
             }
         },
 
@@ -258,9 +323,7 @@
             methods.exit_fullscreen();
 
             // for use with Galleria it is important that npl_content never have display:none set
-            $('#npl_content')
-                .fadeTo(options.speed, 0)
-                .attr('src', '');
+            $('#npl_content').fadeTo(options.speed, 0);
             $('#npl_spinner, #npl_button_close').addClass('hidden');
             $("#npl_overlay, #npl_overlay2").fadeOut(options.speed);
             $('#npl_wrapper').fadeOut(options.speed);
@@ -271,7 +334,7 @@
             methods.ios.close();
 
             // reset our modified url to our original state
-            if (window.nplModalRouted) {
+            if (window.nplModalRouted && window.nplModalSettings.enable_routing != '0') {
                 window.nplModalRouted.navigate(window.nplModalRouted.router_slug);
                 if (nplModalSettings.is_front_page == "1" && history.pushState) {
                     history.pushState({}, document.title, window.nplModalRouted.initial_url);
@@ -282,6 +345,9 @@
             $(document).scrollTop(scroll_top);
 
             is_open = false;
+
+            // Opera <= 12 (17 is fine) will end execution here, so this statement must come last
+            $('#npl_content').attr('src', '');
         },
 
         // make a request to enter fullscreen mode.
@@ -362,13 +428,16 @@ jQuery(document).ready(function($) {
 
     var nplModalRoutes = Backbone.Router.extend({
         initialize: function() {
+            var self = this;
+
             // the url is restored to this location when the lightbox closes
-            this.initial_url = window.location.toString();
+            this.initial_url = window.location.toString().split('#')[0];
 
             // cach for galleria to inspect
             this.gallery_id  = null;
             this.image_id    = null;
             this.comments    = null;
+            this.selector    = null;
 
             // for client windows to reference
             this.ajax_url = photocrati_ajax.url;
@@ -378,11 +447,17 @@ jQuery(document).ready(function($) {
             this.route(this.router_slug + "/:gallery_id/:image_id", "gallery_and_image");
             this.route(this.router_slug + "/:gallery_id/:image_id/:comments", "gallery_and_image");
             this.route(this.router_slug, 'close_modal');
+
+            // Galleria theme will listen for this event to determine fullscreen state changes
+            $(window).on('fullscreenchange mozfullscreenchange webkitfullscreenchange', function (event) {
+                self.trigger('nplModalRouted_fullscreen_change');
+            });
         },
 
         // to prevent slug conflicts inject the wordpress url prefix when we're dealing with the wordpress front-page
         front_page_pushstate: function(transient_id, image_id) {
-            if (nplModalSettings.is_front_page != "1") { return true; }
+            if (nplModalSettings.is_front_page != "1" || transient_id == undefined) { return false; }
+            if ('undefined' == typeof window.galleries) { return false; }
 
             var url  = '';
             var slug = transient_id;
@@ -410,6 +485,7 @@ jQuery(document).ready(function($) {
         // returns the slug string by inspecting galleries by their transient id and gallery ID
         get_slug: function (transient_id) {
             var slug = transient_id;
+            if ('undefined' == typeof window.galleries) { return slug; }
 
             $.each(galleries, function(index, gallery) {
                 if (gallery.slug && gallery.transient_id == transient_id) {
@@ -426,6 +502,8 @@ jQuery(document).ready(function($) {
 
         get_id_from_transient: function (transient_id) {
             var id = transient_id;
+            if ('undefined' == typeof window.galleries) { return id; }
+
             $.each(galleries, function(index, gallery) {
                 if (gallery.transient_id == transient_id) {
                     id = gallery.ID;
@@ -437,6 +515,7 @@ jQuery(document).ready(function($) {
         // returns the transient id by inspecting galleries by their slug and gallery ID
         get_transient: function (slug) {
             var id = slug;
+            if ('undefined' == typeof window.galleries) { return id; }
 
             $.each(galleries, function(index, gallery) {
                 if (gallery.slug && gallery.slug == slug) {

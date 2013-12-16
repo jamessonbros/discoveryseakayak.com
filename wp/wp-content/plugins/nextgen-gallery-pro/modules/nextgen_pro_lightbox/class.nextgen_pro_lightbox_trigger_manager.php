@@ -6,11 +6,20 @@ class Mixin_NextGen_Pro_Lightbox_Trigger_Manager extends Mixin
 	
 	function get_default_trigger_list()
 	{
-		return array(
-			'photocrati.lightbox', 
-			'photocrati.social', 
-			/*'photocrati.cart',*/
+		$retval = array(
+			'photocrati.lightbox'
 		);
+
+		$mapper = C_Lightbox_Library_Mapper::get_instance();
+		if (($lightbox = $mapper->find_by_name(NEXTGEN_PRO_LIGHTBOX_MODULE_NAME))) {
+			if (isset($lightbox->display_settings['enable_comments']) && intval($lightbox->display_settings['enable_comments'])) {
+				$retval[] = 'photocrati.social';
+			}
+		}
+
+		//$retval[] = 'photocrati.cart';
+
+		return $retval;
 	}
 
 	function get_trigger_list()

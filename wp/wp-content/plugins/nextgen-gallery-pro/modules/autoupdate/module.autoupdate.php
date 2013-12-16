@@ -8,7 +8,7 @@
 
 class M_AutoUpdate extends C_Base_Module
 {
-    var $_api_url = NULL;
+  var $_api_url = null;
 
 	function define()
 	{
@@ -16,14 +16,11 @@ class M_AutoUpdate extends C_Base_Module
 			'photocrati-auto_update',
 			'Photocrati Auto Update',
 			"Provides automatic updates",
-			'0.4',
+			'0.6',
 			'http://www.photocrati.com',
 			'Photocrati Media',
 			'http://www.photocrati.com'
 		);
-
-		include_once('class.autoupdate_installer.php');
-		C_Photocrati_Installer::add_handler($this->module_id, 'C_AutoUpdate_Installer');
 	}
 
     /**
@@ -33,14 +30,7 @@ class M_AutoUpdate extends C_Base_Module
     function _get_api_url()
     {
         if (is_null($this->_api_url)) {
-            $settings = C_NextGen_Settings::get_instance();
-            $api_url = $settings->autoupdate_api_url;
-            
-            if ($api_url == null) {
-            	$api_url = 'http://members.photocrati.com/api/';
-            }
-            
-            $this->_api_url = trailingslashit($api_url);
+            $this->_api_url = 'http://members.photocrati.com/api/';
         }
 
         return $this->_api_url;
@@ -793,7 +783,6 @@ class M_AutoUpdate extends C_Base_Module
     function get_type_list()
     {
         return array(
-			'C_AutoUpdate_Installer'	=>	'class.autoupdate_installer.php'
         );
     }
 }

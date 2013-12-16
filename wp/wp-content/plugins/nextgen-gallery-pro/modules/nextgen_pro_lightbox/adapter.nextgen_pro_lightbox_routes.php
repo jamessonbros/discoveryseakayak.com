@@ -18,8 +18,13 @@ class A_NextGen_Pro_Lightbox_Routes extends Mixin
         $app->rewrite("/{id}", "/id--{id}");
         $app->route('/', 'I_NextGen_Pro_Lightbox_Controller#index');
 
+        $app = $this->create_app('/nextgen-pro-lightbox-load-images');
+        $app->rewrite("/{id}", "/id--{id}");
+        $app->route('/', 'I_NextGen_Pro_Lightbox_Controller#load_images');
+
         $app = $this->create_app('/nextgen-share');
-        $app->rewrite("/{displayed_gallery_id}/{image_id}", '/displayed_gallery_id--{displayed_gallery_id}/image_id--{image_id}');
+		$app->rewrite('/{displayed_gallery_id}/{image_id}/{named_size}', '/displayed_gallery_id--{displayed_gallery_id}/image_id--{image_id}/named_size--{named_size}', FALSE, TRUE);
+        $app->rewrite("/{displayed_gallery_id}/{image_id}", '/displayed_gallery_id--{displayed_gallery_id}/image_id--{image_id}/named_size--thumb');
         $app->route('/', 'I_OpenGraph_Controller#index');
     }
 }

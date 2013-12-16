@@ -13,7 +13,7 @@ class M_NextGen_Pro_Film extends C_Base_Module
 			'photocrati-nextgen_pro_film',
 			'NextGEN Pro Film',
 			'Provides a film-like gallery for NextGEN Gallery',
-            '0.4',
+            '0.6',
 			'http://www.nextgen-gallery.com',
 			'Photocrati Media',
 			'http://www.photocrati.com',
@@ -54,16 +54,17 @@ class M_NextGen_Pro_Film extends C_Base_Module
 			'A_NextGen_Pro_Film_Dynamic_Styles'
 		);
 
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_Film_Form',
-			$this->module_id
-		);
-
-        $this->get_registry()->add_adapter(
-            'I_Form_Manager',
-            'A_NextGen_Pro_Film_Forms'
-        );
+        if (is_admin()) {
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Film_Form',
+                $this->module_id
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Film_Forms'
+            );
+        }
 	}
 }
 

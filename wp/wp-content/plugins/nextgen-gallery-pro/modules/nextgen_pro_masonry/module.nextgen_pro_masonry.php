@@ -16,7 +16,7 @@ class M_NextGen_Pro_Masonry extends C_Base_Module
             'photocrati-nextgen_pro_masonry',
             'NextGEN Pro Masonry',
             'Provides the NextGEN Pro Masonry Display Type',
-            '0.4',
+            '0.6',
             'http://www.nextgen-gallery.com',
             'Photocrati Media',
             'http://www.photocrati.com'
@@ -42,9 +42,18 @@ class M_NextGen_Pro_Masonry extends C_Base_Module
             $this->module_id
         );
 
-        // Add settings form
-        $this->get_registry()->add_adapter('I_Form', 'A_NextGen_Pro_Masonry_Form', $this->module_id);
-        $this->get_registry()->add_adapter('I_Form_Manager', 'A_NextGen_Pro_Masonry_Forms');
+        if (is_admin()) {
+            // Add settings form
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Masonry_Form',
+                $this->module_id
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Masonry_Forms'
+            );
+        }
     }
 
     function get_type_list()

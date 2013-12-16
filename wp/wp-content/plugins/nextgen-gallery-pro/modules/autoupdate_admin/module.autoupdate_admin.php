@@ -7,9 +7,6 @@
 	}
 ***/
 
-define('NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_URL', path_join(NEXTGEN_GALLERY_PRO_MODULE_URL, basename(dirname(__FILE__))));
-define('NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_STATIC_URL', path_join(NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_URL, 'static'));
-
 class M_AutoUpdate_Admin extends C_Base_Module
 {
 		var $_updater = null;
@@ -23,7 +20,7 @@ class M_AutoUpdate_Admin extends C_Base_Module
             'photocrati-auto_update-admin',
             'Photocrati Auto Update Admin',
             "Provides an AJAX admin interface to sequentially and progressively download and install updates",
-            '0.5',
+            '0.8',
             'http://www.photocrati.com',
             'Photocrati Media',
             'http://www.photocrati.com'
@@ -137,35 +134,51 @@ class M_AutoUpdate_Admin extends C_Base_Module
 			if (!interface_exists('I_Ajax_Handler', false)) {
 				$ajaxurl = admin_url('admin-ajax.php');
 			}
+			
+			$static_progressbar_js = null;
+			$static_admin_js = null;
+			$static_jqueryui_css = null;
+			$static_admin_css = null;
+			$router = null;
+			
+			try {
+				$router = C_Component_Registry::get_instance()->get_utility('I_Router');
+			}
+			catch (Exception $e) {
+				$router = null;
+			}
+			
+			if ($router != null) {
+				$static_progressbar_js = $router->get_static_url('photocrati-auto_update-admin#/jqueryUI.progressbar.js');
+				$static_admin_js = $router->get_static_url('photocrati-auto_update-admin#/admin.js');
+				$static_jqueryui_css = $router->get_static_url('photocrati-auto_update-admin#/jquery-ui/jquery-ui-1.9.1.custom.css');
+				$static_admin_css = $router->get_static_url('photocrati-auto_update-admin#/admin.css');
+			}
+			else {
+				$theme_uri = get_template_directory_uri();
+				$static_uri = $theme_uri . '/products/photocrati_theme/modules/autoupdate_admin/static/';
+				$static_progressbar_js = $static_uri . 'jqueryUI.progressbar.js';
+				$static_admin_js = $static_uri . 'admin.js';
+				$static_jqueryui_css = $static_uri . 'jquery-ui/jquery-ui-1.9.1.custom.css';
+				$static_admin_css = $static_uri . 'admin.css';
+			}
 
 			wp_register_script(
-				'jquery-ui-progressbar',
-				path_join(
-					NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_STATIC_URL,
-					'jqueryUI.progressbar.js'
-				),
+				'jquery-ui-progressbar', $static_progressbar_js,
 				array('jquery-ui-core')
 			);
 
 			wp_register_script(
-				'pc-autoupdate-admin',
-				path_join(
-					NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_STATIC_URL,
-					'admin.js'
-				),
+				'pc-autoupdate-admin', $static_admin_js,
 				array('jquery-ui-core', 'jquery-ui-progressbar', 'jquery-ui-dialog')
 			);
 
 			wp_register_style(
-				'jquery-ui', NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_STATIC_URL . '/jquery-ui/jquery-ui-1.9.1.custom.css', false, '1.8.16'
+				'jquery-ui', $static_jqueryui_css, false, '1.8.16'
 			);
 
 			wp_register_style(
-				'pc-autoupdate-admin',
-				path_join(
-					NEXTGEN_GALLERY_AUTOUPDATE_ADMIN_MOD_STATIC_URL,
-					'admin.css'
-				)
+				'pc-autoupdate-admin', $static_admin_css
 			);
 
 			wp_enqueue_script('pc-autoupdate-admin');

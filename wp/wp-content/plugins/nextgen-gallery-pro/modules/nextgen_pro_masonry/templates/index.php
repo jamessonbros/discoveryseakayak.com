@@ -16,11 +16,15 @@
             <div class='ngg-pro-masonry-item' style='width: <?php echo $thumb_size['width']; ?>px; height: <?php echo $thumb_size['height']; ?>px;'>
                 <a href="<?php echo esc_attr($storage->get_image_url($image)); ?>"
                    title="<?php echo esc_attr($image->description); ?>"
-                   data-image-id='<?php echo esc_attr($image->pid); ?>'
+                   data-src="<?php echo esc_attr($storage->get_image_url($image)); ?>"
+                   data-thumbnail="<?php echo esc_attr($storage->get_image_url($image, 'thumb')); ?>"
+                   data-image-id="<?php echo esc_attr($image->{$image->id_field}); ?>"
+                   data-title="<?php echo esc_attr($image->alttext); ?>"
+                   data-description="<?php echo esc_attr(stripslashes($image->description)); ?>"
                    <?php echo $effect_code ?>>
                     <img title="<?php echo esc_attr($image->alttext); ?>"
                          alt="<?php echo esc_attr($image->alttext); ?>"
-                         src="<?php echo esc_attr($storage->get_image_url($image, $thumbnail_size_name)); ?>"
+                         src="<?php echo esc_attr($storage->get_image_url($image, $thumbnail_size_name, TRUE)); ?>"
                          width="<?php echo esc_attr($thumb_size['width']); ?>"
                          height="<?php echo esc_attr($thumb_size['height']); ?>"/>
                 </a>

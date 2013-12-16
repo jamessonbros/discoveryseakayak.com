@@ -5,7 +5,9 @@ var defaults = $.extend(Galleria.configure.options, {
 	carousel: true,
 	thumbnails: true,
 	autoplay: true,
-	showInfo: false
+	showInfo: false,
+	fullscreenDoubleTap: false,
+	trueFullscreen: false
 });
 
 // Set the image margin to the same width as the border size
@@ -25,6 +27,8 @@ Galleria.addTheme({
     defaults: defaults,
     init: function(options) {
         Galleria.requires(1.28, 'This version of Classic theme requires Galleria 1.2.8 or later');
+    
+    this._fullscreen._enter = function (t) {};
 
 		// Provides a function which sets the width of an image
 		this.set_image_width = function($img, width) {
@@ -147,15 +151,6 @@ Galleria.addTheme({
 					$(this).css({ height : jstage.height() + 'px' });
 					$(this).height(jstage.height());
 				});
-				
-				this.bind('loadfinish', this.proxy(function(e){
-					var $img = $(e.imageTarget);
-					
-					$img.parent().height(jstage.height());
-					$img.css({
-						top : ($img.parent().height() - $img.height()) / 2
-					});
-				}));
 			}
 			
 			jcap.hover(
@@ -263,23 +258,28 @@ Galleria.addTheme({
 
 		this.bind('loadfinish', this.proxy(function(e){
 			var $img = $(e.imageTarget);
+			var jstage = $(this._target).find('.galleria-stage');
 
 			// If a border has been specified, adjust the dimensions of the image
 			// to accomodate
-			if (this._options.borderSize > 0) {
-
-				// The stage height is accomodated for the height of the
-				// counter (10px) and the border width
-				var stage_height = $(this._target).height()-(this._options.borderSize*2)-10;
-				var aspect_ratio = $img.width()/$img.height();
-				var max_width	 = $img.width()-(this._options.borderSize*2);
+			// The stage height is accomodated for the height of the
+			// counter (10px) and the border width
+			var stage_height = jstage.height()-(this._options.borderSize*2)-10;
+			var aspect_ratio = $img.width()/$img.height();
+			var max_width	 = $img.width()-(this._options.borderSize*2);
+			if ($img.height() > stage_height) {
+				this.set_image_height($img, stage_height);
+				this.set_image_width($img, stage_height*aspect_ratio);
+			}
+			else {
 				this.set_image_width($img, max_width);
 				this.set_image_height($img, $img.width()/aspect_ratio);
-				if ($img.height() > stage_height) {
-					this.set_image_height($img, stage_height);
-					this.set_image_width($img, stage_height*aspect_ratio);
-				}
 			}
+			
+			$img.parent().height(jstage.height());
+			$img.css({
+				top : ($img.parent().height() - $img.height()) / 2
+			});
 
 			// If the image is clicked, open fullscreen mode
 			$img.on('click', this.proxy(function(){
@@ -311,12 +311,12 @@ Galleria.addTheme({
 					// If a border has been specified, adjust the dimensions of the image
 					// to accomodate
 					if (ow > w) {
-						$img.width(w - (ow - w));
-						$par.width($img.width());
+						//$img.width(w - (ow - w));
+						//$par.width($img.width());
 					}
 					if (oh > h) {
-						$img.height(h - (oh - h));
-						$par.height($img.height());
+						//$img.height(h - (oh - h));
+						//$par.height($img.height());
 					}
 
           if (! Galleria.TOUCH ) {
@@ -336,7 +336,7 @@ Galleria.addTheme({
         }));
 
         this.bind('loadfinish', this.proxy(function (event) {
-            var self = this
+            var self = this;
             var gallery_id = window.Galleria_Instance.displayed_gallery.ID;
             top.jQuery('#displayed_gallery_' + gallery_id).siblings('div.ngg-trigger-buttons').each(function() {
                 top.jQuery('body').trigger('nplmodal.update_image_id', [jQuery(this).find('i'), $(self.getData(self.getIndex()).original).data('image-id')]);

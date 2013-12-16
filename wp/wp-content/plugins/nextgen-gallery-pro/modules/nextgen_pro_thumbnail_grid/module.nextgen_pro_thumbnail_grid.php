@@ -16,7 +16,7 @@ class M_NextGen_Pro_Thumbnail_Grid extends C_Base_Module
 			NEXTGEN_PRO_THUMBNAIL_GRID_MODULE_NAME,
 			'NextGen Pro Thumbnail Grid',
 			'Provides a thumbnail grid for NextGEN Pro',
-            '0.4',
+            '0.6',
 			'http://www.photocrati.com',
 			'Photocrati Media',
 			'http://www.photocrati.com',
@@ -57,16 +57,17 @@ class M_NextGen_Pro_Thumbnail_Grid extends C_Base_Module
 			'A_NextGen_Pro_Thumbnail_Grid_Mapper'
 		);
 
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_Thumbnail_Grid_Form',
-			$this->module_id
-		);
-
-        $this->get_registry()->add_adapter(
-            'I_Form_Manager',
-            'A_NextGen_Pro_Thumbnail_Grid_Forms'
-        );
+        if (is_admin()) {
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Thumbnail_Grid_Form',
+                $this->module_id
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Thumbnail_Grid_Forms'
+            );
+        }
 	}
 }
 

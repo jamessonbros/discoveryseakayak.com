@@ -10,19 +10,20 @@ class Mixin_NextGen_Pro_Album_Controller extends Mixin
 
     function _render_gallery($display_type, $original_display_type, $return=FALSE)
     {
-        // Get the gallery id, which might
-        $gallery_id = $this->param('gallery');
-        if (!is_numeric($gallery_id)) {
-            $mapper = $this->get_registry()->get_utility('I_Gallery_Mapper');
-            $result = reset($mapper->select()->where(array('slug = %s', $gallery_id))->limit(1)->run_query());
-            $gallery_id = $result->{$result->id_field};
-        }
+		// Try finding the gallery by slug first. If nothing is found, we assume that
+		// the user passed in a gallery id instead
+		$gallery = $gallery_slug = $this->object->param('gallery');
+		$mapper = $this->object->get_registry()->get_utility('I_Gallery_Mapper');
+		$result = reset($mapper->select()->where(array('slug = %s', $gallery))->limit(1)->run_query());
+		if ($result) {
+			$gallery = $result->{$result->id_field};
+		}
 
         $renderer = $this->object->get_registry()->get_utility('I_Displayed_Gallery_Renderer');
         return $renderer->display_images(
             array(
                 'source'				=> 'galleries',
-                'container_ids'			=> array($gallery_id),
+                'container_ids'			=> array($gallery),
                 'display_type'			=> $display_type,
                 'original_display_type'	=> $original_display_type
             )
@@ -98,7 +99,7 @@ class Mixin_NextGen_Pro_Album_Controller extends Mixin
 
             $preview_img        = $mapper->find($entity->previewpic);
             $entity->thumb_size = $storage->get_image_dimensions($preview_img, $thumbnail_size_name);
-            $entity->url        = $storage->get_image_url($preview_img, $thumbnail_size_name);
+            $entity->url        = $storage->get_image_url($preview_img, $thumbnail_size_name, TRUE);
         }
 
         return $entities;

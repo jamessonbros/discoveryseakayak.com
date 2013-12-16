@@ -14,25 +14,25 @@ $this->start_element('nextgen_gallery.gallery_container', 'container', $displaye
 		
 		$i = 0;
 		foreach ($images as $image): 
-	$image_size = $storage->get_image_dimensions($image, $image_size_name); 
+			$image_size = $storage->get_image_dimensions($image, $image_size_name);
 	
-	// We scale each image in such that it's longest side equals the gallery's
-	// "Image Display Size" setting/property
-	$aspect_ratio = $image_size['width']/$image_size['height'];
+			// We scale each image in such that it's longest side equals the gallery's
+			// "Image Display Size" setting/property
+			$aspect_ratio = $image_size['width']/$image_size['height'];
 
-	// XXX always assume width
-#if (((float)$image_size['width']) > ((float)$image_size['height'])) {
-		$image_size['width']	 = $image_display_size;
-		$image_size['height']	 = $image_size['width']/$aspect_ratio;
-#	}
-#	else {
-#		$image_size['height']	= $image_display_size;
-#		$image_size['width']	= $image_size['height']*$aspect_ratio;
-#	}
+			// XXX always assume width
+			#if (((float)$image_size['width']) > ((float)$image_size['height'])) {
+					$image_size['width']	 = $image_display_size;
+					$image_size['height']	 = $image_size['width']/$aspect_ratio;
+			#	}
+			#	else {
+			#		$image_size['height']	= $image_display_size;
+			#		$image_size['width']	= $image_size['height']*$aspect_ratio;
+			#	}
 	
-		$style = 'width: ' . $image_size['width'] . 'px';
+			$style = 'width: ' . $image_size['width'] . 'px';
 		
-		$this->start_element('nextgen_gallery.image_panel', 'item', $image);
+			$this->start_element('nextgen_gallery.image_panel', 'item', $image);
 		
 		?>
 	<div id="<?php echo_h('ngg-image-' . $i) ?>" class="image-wrapper" style="<?php echo esc_attr($style); ?>">
@@ -43,20 +43,24 @@ $this->start_element('nextgen_gallery.gallery_container', 'container', $displaye
 		?>
 		<a href="<?php echo esc_attr($storage->get_image_url($image))?>"
 		   title="<?php echo esc_attr($image->description)?>"
-		   data-image-id='<?php echo esc_attr($image->pid); ?>'
+           data-src="<?php echo esc_attr($storage->get_image_url($image)); ?>"
+           data-thumbnail="<?php echo esc_attr($storage->get_image_url($image, 'thumb')); ?>"
+           data-image-id="<?php echo esc_attr($image->{$image->id_field}); ?>"
+           data-title="<?php echo esc_attr($image->alttext); ?>"
+           data-description="<?php echo esc_attr(stripslashes($image->description)); ?>"
 		   <?php echo $effect_code ?>>
 		   <?php // NOTE: we don't specify height as the "width" property might actually not reflect the final image width, because images are responsive and adapt to container size when needed ?>
 			<img
 				data-title="<?php echo esc_attr($image->alttext)?>"
 				data-alt="<?php echo esc_attr($image->alttext)?>"
                 width="<?php echo esc_attr($image_size['width']); ?>"
-				src="<?php echo esc_attr($storage->get_image_url($image, $image_size_name))?>"
+				src="<?php echo esc_attr($storage->get_image_url($image, $image_size_name, TRUE))?>"
 			/>
 			<noscript>
 				<img
 					title="<?php echo esc_attr($image->alttext)?>"
 					alt="<?php echo esc_attr($image->alttext)?>"
-					src="<?php echo esc_attr($storage->get_image_url($image, $image_size_name))?>"
+					src="<?php echo esc_attr($storage->get_image_url($image, $image_size_name, TRUE))?>"
           width="<?php echo esc_attr($image_size['width']); ?>"
 				/>
 			</noscript>

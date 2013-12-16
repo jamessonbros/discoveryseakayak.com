@@ -24,9 +24,10 @@ class A_NextGen_Pro_Thumbnail_Grid_Mapper extends Mixin
 			$this->_set_default_value($entity, 'settings', 'thumbnail_watermark', 0);
             $this->_set_default_value($entity, 'settings', 'images_per_page', $settings->galImages);
             $this->_set_default_value($entity, 'settings', 'disable_pagination', 0);
-			$this->_set_default_value($entity, 'settings', 'border_color', '#FFFFFF');
-			$this->_set_default_value($entity, 'settings', 'border_size', 1);
-			$this->_set_default_value($entity, 'settings', 'spacing', 1);
+			$this->_set_default_value($entity, 'settings', 'border_color', '#eeeeee');
+			$this->_set_default_value($entity, 'settings', 'border_size', 0);
+			$this->_set_default_value($entity, 'settings', 'spacing', 2);
+			$this->_set_default_value($entity, 'settings', 'number_of_columns', 0);
 		}
 	}
 }

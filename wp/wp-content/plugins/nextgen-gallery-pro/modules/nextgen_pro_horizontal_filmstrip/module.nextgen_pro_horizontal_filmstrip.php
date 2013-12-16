@@ -14,7 +14,7 @@ class M_NextGen_Pro_Horizontal_Filmstrip extends C_Base_Module
 			NEXTGEN_PRO_HORIZONTAL_FILMSTRIP_MODULE_NAME,
 			'NextGEN Pro Horizontal Filmstrip',
 			"Provides Photocrati's Horizontal Filmstrip for NextGEN Gallery",
-            '0.4',
+            '0.6',
 			'http://www.nextgen-gallery.com',
 			'Photocrati Media',
 			'http://www.photocrati.com',
@@ -51,16 +51,17 @@ class M_NextGen_Pro_Horizontal_Filmstrip extends C_Base_Module
 			$this->module_id
 		);
 
-		$this->get_registry()->add_adapter(
-			'I_Form',
-			'A_NextGen_Pro_Horizontal_Filmstrip_Form',
-			$this->module_id
-		);
-
-        $this->get_registry()->add_adapter(
-            'I_Form_Manager',
-            'A_NextGen_Pro_Horizontal_Filmstrip_Forms'
-        );
+        if (is_admin()) {
+            $this->get_registry()->add_adapter(
+                'I_Form',
+                'A_NextGen_Pro_Horizontal_Filmstrip_Form',
+                $this->module_id
+            );
+            $this->get_registry()->add_adapter(
+                'I_Form_Manager',
+                'A_NextGen_Pro_Horizontal_Filmstrip_Forms'
+            );
+        }
 	}
 }
 new M_NextGen_Pro_Horizontal_Filmstrip;
