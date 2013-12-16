@@ -1,7 +1,11 @@
 .DS_Store
+node_modules
 
 /wp-config.php
+wp-cli*
 
-wp/media
-wp/wp-content/uploads/*
-*backup*
+/wp/media
+/wp/wp-content/uploads/*
+/wp/media/backup*
+/wp/wp-content/backup*
+/wp/wp-content/gallery/*
