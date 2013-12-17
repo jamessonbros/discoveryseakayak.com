@@ -1,12 +1,16 @@
 .DS_Store
 node_modules
 
-/wp-config.php
+# Configs
+wp-config.php
 wp-cli*
 
+# Uploaded
 /wp/media
 /wp/wp-content/uploads/*
-/wp/media/backup*
 /wp/wp-content/backup*
 /wp/wp-content/gallery/*
 /wp/wp-content/ngg_styles
+
+# ignore the symlink to the theme
+/theme
