@@ -52,6 +52,7 @@ the_post();
 
 <!-- Nav tabs -->
 <ul class="nav nav-tabs">
+
   <li class="active"><a href="#info" data-toggle="tab">Overview</a></li>
 
   <?php if (get_field('gear_provided')): ?>
@@ -61,12 +62,6 @@ the_post();
   <?php if (get_field('what_to_bring')): ?>
     <li><a href="#bring" data-toggle="tab">What to Bring</a></li>
   <?php endif ?>
-
-  <?php /*
-  <?php if (get_field('maps')): ?>
-    <li><a href="#map" data-toggle="tab">Maps &amp; Charts</a></li>
-  <?php endif ?>
-  */ ?>
 
   <?php if (get_field('itinerary')): ?>
     <li><a href="#itinerary" data-toggle="tab">Itinerary</a></li>
@@ -114,16 +109,6 @@ the_post();
     </div>
     <!-- /bring -->
   <?php endif ?>
-
-  <?php /*
-  <?php if (get_field('maps')): ?>
-    <div class="tab-pane fade" id="map">
-      <h2>Maps &amp; Charts</h2>
-      <?php the_field('maps') ?>
-    </div>
-    <!-- /map -->
-  <?php endif ?>
-  */ ?>
 
   <?php if ($itinerary = get_field('itinerary')): ?>
     <div class="tab-pane fade" id="itinerary">
