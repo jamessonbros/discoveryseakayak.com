@@ -53,9 +53,23 @@ if(function_exists("register_field_group"))
         'default_value' => '',
         'placeholder' => '',
         'prepend' => '',
-        'append' => 'Hours',
+        'append' => '',
         'formatting' => 'html',
         'maxlength' => '',
+      ),
+      array (
+        'key' => 'field_52ea5d93b0498',
+        'label' => 'Trip Duration Units',
+        'name' => 'trip_duration_units',
+        'type' => 'select',
+        'required' => 1,
+        'choices' => array (
+          'Hours' => 'Hours',
+          'Days' => 'Days',
+        ),
+        'default_value' => 'Hours',
+        'allow_null' => 0,
+        'multiple' => 0,
       ),
       array (
         'key' => 'field_52dc10cbec3fd',
@@ -131,6 +145,7 @@ if(function_exists("register_field_group"))
     'menu_order' => 0,
   ));
 }
+
 
 
 // Trip Departures

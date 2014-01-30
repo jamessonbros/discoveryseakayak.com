@@ -37,7 +37,7 @@ the_post();
     <?php endif ?>
 
     <?php if (get_field('trip_duration')): ?>
-    <h2><span class="glyphicon glyphicon-dull glyphicon-time"></span> Duration: <?php the_field('trip_duration') ?> hours</h2>
+    <h2><span class="glyphicon glyphicon-dull glyphicon-time"></span> Duration: <?php the_field('trip_duration') ?> <?php the_field('trip_duration_units') ?></h2>
     <?php endif ?>
 
     <?php if (get_field('trip_dates_message')): ?>
