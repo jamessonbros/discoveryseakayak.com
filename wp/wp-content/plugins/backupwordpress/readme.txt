@@ -3,7 +3,7 @@ Contributors: humanmade, willmot, pauldewouters, joehoyle, mattheu, tcrsavage, c
 Tags: back up, backup, backups, database, zip, db, files, archive, wp-cli, humanmade
 Requires at least: 3.3.3
 Tested up to: 3.8
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 
 Simple automated back ups of your WordPress powered website.
 
@@ -102,6 +102,14 @@ You can also tweet <a href="http://twitter.com/humanmadeltd">@humanmadeltd</a> o
 3. Easily manage exclude rules and see exactly which files are included and excluded from your backup.
 
 == Changelog ==
+
+#### 2.4.2
+
+* In WordPress Multisite the backups admin page is now located in Network admin instead of the wp-admin of the main site.
+* Fixed an issue with the new intercom support integration that could cause loading the backups page to timeout
+* Fixed 3 stray PHP warnings.
+* BackUpWordPress will now always be loaded before any BackUpWordPress Extensions.
+* Fixed an issue that could cause a long modal (excludes) to show underneath the WP admin bar.
 
 #### 2.4.1
 
