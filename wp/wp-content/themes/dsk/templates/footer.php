@@ -1,7 +1,7 @@
 <footer class="content-info container" role="contentinfo">
   <div class="row">
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-      <p class="copyright">&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?></p>
+      <p class="copyright">&copy; <?php echo date('Y'); ?> <a href="<?php echo home_url() ?>"><?php bloginfo('name'); ?></a></p>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
       <div class="footer-socials">
