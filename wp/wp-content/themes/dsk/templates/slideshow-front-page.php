@@ -10,17 +10,17 @@
   <div class="carousel-inner">
     <div class="item active">
       <div class="container">
-        <img src="http://placehold.it/1024x430&amp;text=Slide+1" alt="" class="img-responsive">
+        <img src="/wp-content/themes/dsk/assets/img/slide1.jpg" alt="" class="img-responsive">
       </div>
     </div>
     <div class="item">
       <div class="container">
-        <img src="http://placehold.it/1024x430&amp;text=Slide+2" alt="" class="img-responsive">
+        <img src="/wp-content/themes/dsk/assets/img/slide2.jpg" alt="" class="img-responsive">
       </div>
     </div>
     <div class="item">
       <div class="container">
-        <img src="http://placehold.it/1024x430&amp;text=Slide+3" alt="" class="img-responsive">
+        <img src="/wp-content/themes/dsk/assets/img/slide3.jpg" alt="" class="img-responsive">
       </div>
     </div>
   </div>
