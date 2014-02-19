@@ -360,3 +360,43 @@ if(function_exists("register_field_group"))
     'menu_order' => 0,
   ));
 }
+
+
+// Hero image
+if(function_exists("register_field_group"))
+{
+  register_field_group(array (
+    'id' => 'acf_hero-image',
+    'title' => 'Hero Image',
+    'fields' => array (
+      array (
+        'key' => 'field_5304fa79d155e',
+        'label' => 'Hero Image',
+        'name' => 'hero_image',
+        'type' => 'image',
+        'instructions' => '1160px W x 450px H - height may vary',
+        'save_format' => 'object',
+        'preview_size' => 'thumbnail',
+        'library' => 'all',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'post_type',
+          'operator' => '==',
+          'value' => 'page',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'acf_after_title',
+      'layout' => 'no_box',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => -1,
+  ));
+}
