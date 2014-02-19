@@ -262,3 +262,101 @@ if(function_exists("register_field_group"))
     'menu_order' => 1000,
   ));
 }
+
+
+// Lessons template
+if(function_exists("register_field_group"))
+{
+  register_field_group(array (
+    'id' => 'acf_lessons',
+    'title' => 'Lessons',
+    'fields' => array (
+      array (
+        'key' => 'field_5304f2040e25c',
+        'label' => 'Classes',
+        'name' => 'classes',
+        'type' => 'repeater',
+        'sub_fields' => array (
+          array (
+            'key' => 'field_5304f2160e25d',
+            'label' => 'Title',
+            'name' => 'title',
+            'type' => 'text',
+            'required' => 1,
+            'column_width' => '',
+            'default_value' => '',
+            'placeholder' => '',
+            'prepend' => '',
+            'append' => '',
+            'formatting' => 'html',
+            'maxlength' => '',
+          ),
+          array (
+            'key' => 'field_5304f22a0e25e',
+            'label' => 'Text',
+            'name' => 'text',
+            'type' => 'textarea',
+            'required' => 1,
+            'column_width' => '',
+            'default_value' => '',
+            'placeholder' => '',
+            'maxlength' => '',
+            'formatting' => 'br',
+          ),
+        ),
+        'row_min' => 4,
+        'row_limit' => 4,
+        'layout' => 'row',
+        'button_label' => 'Add Class',
+      ),
+      array (
+        'key' => 'field_5304f27b0f81c',
+        'label' => 'Private Instruction',
+        'name' => 'private_instruction',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+      array (
+        'key' => 'field_5304f2930f81d',
+        'label' => 'Paddle Clinics',
+        'name' => 'paddle_clinics',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'placeholder' => '',
+        'maxlength' => '',
+        'formatting' => 'br',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+      array (
+        'key' => 'field_5304f2b90f81e',
+        'label' => 'Pool Sessions',
+        'name' => 'pool_sessions',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'page_template',
+          'operator' => '==',
+          'value' => 'template-lessons.php',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'no_box',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => 0,
+  ));
+}
