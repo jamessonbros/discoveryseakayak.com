@@ -400,3 +400,104 @@ if(function_exists("register_field_group"))
     'menu_order' => -1,
   ));
 }
+
+
+// Guides
+if(function_exists("register_field_group"))
+{
+  register_field_group(array (
+    'id' => 'acf_guides',
+    'title' => 'Guides',
+    'fields' => array (
+      array (
+        'key' => 'field_530795ba0547b',
+        'label' => 'Guides',
+        'name' => 'guides',
+        'type' => 'repeater',
+        'required' => 1,
+        'sub_fields' => array (
+          array (
+            'key' => 'field_530795cc0547c',
+            'label' => 'Name',
+            'name' => 'name',
+            'type' => 'text',
+            'required' => 1,
+            'column_width' => '',
+            'default_value' => '',
+            'placeholder' => '',
+            'prepend' => '',
+            'append' => '',
+            'formatting' => 'none',
+            'maxlength' => '',
+          ),
+          array (
+            'key' => 'field_5307979a2edac',
+            'label' => 'Byline',
+            'name' => 'byline',
+            'type' => 'text',
+            'column_width' => '',
+            'default_value' => '',
+            'placeholder' => '',
+            'prepend' => '',
+            'append' => '',
+            'formatting' => 'html',
+            'maxlength' => '',
+          ),
+          array (
+            'key' => 'field_530795d90547d',
+            'label' => 'Image',
+            'name' => 'image',
+            'type' => 'image',
+            'column_width' => '',
+            'save_format' => 'object',
+            'preview_size' => 'thumbnail',
+            'library' => 'all',
+          ),
+          array (
+            'key' => 'field_530795e60547e',
+            'label' => 'Text',
+            'name' => 'text',
+            'type' => 'wysiwyg',
+            'column_width' => '',
+            'default_value' => '',
+            'toolbar' => 'full',
+            'media_upload' => 'no',
+          ),
+        ),
+        'row_min' => 1,
+        'row_limit' => '',
+        'layout' => 'row',
+        'button_label' => 'Add Guide',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'page_template',
+          'operator' => '==',
+          'value' => 'template-guides.php',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'default',
+      'hide_on_screen' => array (
+        0 => 'excerpt',
+        1 => 'custom_fields',
+        2 => 'discussion',
+        3 => 'comments',
+        4 => 'revisions',
+        5 => 'author',
+        6 => 'format',
+        7 => 'featured_image',
+        8 => 'categories',
+        9 => 'tags',
+        10 => 'send-trackbacks',
+      ),
+    ),
+    'menu_order' => 0,
+  ));
+}
