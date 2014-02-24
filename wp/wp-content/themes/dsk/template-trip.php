@@ -24,6 +24,8 @@ the_post();
   </div>
   <div class="col-sm-5">
 
+    <a href="#" class="btn btn-success btn-lg btn-block">Reserve Now &raquo;</a>
+
     <?php if (get_field('price_per_person')): ?>
     <h2 class="price">Price: $<?php the_field('price_per_person') ?></h2>
     <?php endif ?>
@@ -46,7 +48,6 @@ the_post();
     <hr>
     <?php endif ?>
 
-    <a href="#" class="btn btn-success btn-lg">Reserve Now &raquo;</a>
   </div>
 </div>
 
