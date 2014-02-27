@@ -20,6 +20,26 @@ var ExampleSite = {
     init: function() {
       // JS here
     }
+  },
+  // FAQs page
+  faqs: {
+    init: function() {
+      var faqs = $('.faq');
+      if (faqs.length) {
+        faqs.each(function(i, el) {
+          var q = $(el).find('.faq-question'),
+              a = $(el).find('.faq-answer'),
+              id = $(el).data('faq-id');
+
+          q.find('.question-text').wrap('<a href="#faq-'+id+'">');
+          a.hide();
+          q.on('click', function(e) {
+            e.preventDefault();
+            a.toggle('fast', function() {});
+          });
+        });
+      }
+    }
   }
 };
 
