@@ -71,6 +71,10 @@ the_post();
   <?php if (get_field('gallery')): ?>
     <li><a href="#photos" data-toggle="tab">Trip Photos</a></li>
   <?php endif ?>
+
+  <?php if (get_field('related_faqs')): ?>
+    <li><a href="#faqs" data-toggle="tab">FAQs</a></li>
+  <?php endif ?>
 </ul>
 
 <!-- Tab panes -->
@@ -136,6 +140,24 @@ the_post();
       </div>
     </div>
     <!-- /photos -->
+  <?php endif ?>
+
+
+  <?php $faqs = get_field('related_faqs') ?>
+  <?php if (count($faqs)): ?>
+    <div class="tab-pane fade" id="faqs">
+      <h2 title="Frequently Answered Questions">FAQs</h2>
+      <dl>
+      <?php foreach ($faqs as $faq): ?>
+        <dt>
+          <?php echo apply_filters('the_title', $faq->post_title) ?>
+        </dt>
+        <dd>
+          <?php echo apply_filters('the_content', $faq->post_content) ?>
+        </dd>
+      <?php endforeach ?>
+      </dl>
+    </div>
   <?php endif ?>
 
 </div>

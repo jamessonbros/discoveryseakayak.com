@@ -6,7 +6,7 @@ function faq_init() {
 		'public'            => true,
 		'show_in_nav_menus' => false,
 		'show_ui'           => true,
-		'supports'          => array( 'title', 'editor' ),
+		'supports'          => array( 'title', 'editor', 'page-attributes' ),
 		'has_archive'       => false,
 		'query_var'         => true,
 		'rewrite'           => true,

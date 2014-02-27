@@ -501,3 +501,54 @@ if(function_exists("register_field_group"))
     'menu_order' => 0,
   ));
 }
+
+
+// Related FAQs
+if(function_exists("register_field_group"))
+{
+  register_field_group(array (
+    'id' => 'acf_related-faqs',
+    'title' => 'Related FAQs',
+    'fields' => array (
+      array (
+        'key' => 'field_530f7f7fcd480',
+        'label' => 'Related FAQs',
+        'name' => 'related_faqs',
+        'type' => 'relationship',
+        'return_format' => 'object',
+        'post_type' => array (
+          0 => 'faq',
+        ),
+        'taxonomy' => array (
+          0 => 'all',
+        ),
+        'filters' => array (
+          0 => 'search',
+        ),
+        'result_elements' => array (
+          0 => 'post_type',
+          1 => 'post_title',
+        ),
+        'max' => '',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'page_template',
+          'operator' => '==',
+          'value' => 'template-trip.php',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'default',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => 1000,
+  ));
+}
