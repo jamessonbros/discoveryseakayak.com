@@ -147,16 +147,14 @@ the_post();
   <?php if (count($faqs)): ?>
     <div class="tab-pane fade" id="faqs">
       <h2 title="Frequently Answered Questions">FAQs</h2>
-      <dl>
       <?php foreach ($faqs as $faq): ?>
-        <dt>
+        <h3>
           <?php echo apply_filters('the_title', $faq->post_title) ?>
-        </dt>
-        <dd>
+        </h3>
+        <div>
           <?php echo apply_filters('the_content', $faq->post_content) ?>
-        </dd>
+        </div>
       <?php endforeach ?>
-      </dl>
     </div>
   <?php endif ?>
 
