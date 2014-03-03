@@ -549,6 +549,57 @@ if(function_exists("register_field_group"))
       'hide_on_screen' => array (
       ),
     ),
-    'menu_order' => 1000,
+    'menu_order' => 1500,
+  ));
+}
+
+
+// Related Testimonials
+if(function_exists("register_field_group"))
+{
+  register_field_group(array (
+    'id' => 'acf_related-testimonials',
+    'title' => 'Related Testimonials',
+    'fields' => array (
+      array (
+        'key' => 'field_5314a49aad20b',
+        'label' => 'Related Testimonials',
+        'name' => 'related_testimonials',
+        'type' => 'relationship',
+        'return_format' => 'object',
+        'post_type' => array (
+          0 => 'testimonial',
+        ),
+        'taxonomy' => array (
+          0 => 'all',
+        ),
+        'filters' => array (
+          0 => 'search',
+        ),
+        'result_elements' => array (
+          0 => 'post_type',
+          1 => 'post_title',
+        ),
+        'max' => '',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'page_template',
+          'operator' => '==',
+          'value' => 'template-trip.php',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'default',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => 2000,
   ));
 }

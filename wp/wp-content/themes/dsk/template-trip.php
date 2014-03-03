@@ -75,6 +75,10 @@ the_post();
   <?php if (get_field('related_faqs')): ?>
     <li><a href="#faqs" data-toggle="tab">FAQs</a></li>
   <?php endif ?>
+
+  <?php if (get_field('related_testimonials')): ?>
+    <li><a href="#testimonials" data-toggle="tab">Testimonials</a></li>
+  <?php endif ?>
 </ul>
 
 <!-- Tab panes -->
@@ -154,6 +158,26 @@ the_post();
         <div>
           <?php echo apply_filters('the_content', $faq->post_content) ?>
         </div>
+      <?php endforeach ?>
+    </div>
+  <?php endif ?>
+
+  <?php $quotes = get_field('related_testimonials') ?>
+  <?php if (count($quotes)): ?>
+    <div class="tab-pane fade" id="testimonials">
+      <h2>Customers Say...</h2>
+      <?php foreach ($quotes as $quote): ?>
+        <?php $meta = get_post_custom($quote->ID) ?>
+        <blockquote>
+          <?php echo apply_filters('the_content', $quote->post_content) ?>
+          <footer>
+            &ndash; <?php echo apply_filters('the_title', $quote->post_title) ?>
+            <?php if (isset($meta['_byline'][0]) && $meta['_byline'][0]): ?>
+              <br>
+              <?php echo $meta['_byline'][0] ?>
+            <?php endif ?>
+          </footer>
+        </blockquote>
       <?php endforeach ?>
     </div>
   <?php endif ?>
