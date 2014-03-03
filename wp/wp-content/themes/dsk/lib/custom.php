@@ -26,7 +26,7 @@ function dsk_load_icons()
  * Advanced custom fields
  */
 // Hide admin interface
-// define('ACF_LITE', true);
+define('ACF_LITE', true);
 
 // Include Advanced Custom Fields files
 include_once(dirname(__FILE__).'/advanced-custom-fields/acf.php');
