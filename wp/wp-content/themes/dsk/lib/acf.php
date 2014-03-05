@@ -124,6 +124,15 @@ if(function_exists("register_field_group"))
         'toolbar' => 'full',
         'media_upload' => 'yes',
       ),
+      array (
+        'key' => 'field_52dc3317d3505',
+        'label' => 'Terms/Conditions',
+        'name' => 'terms_conditions',
+        'type' => 'wysiwyg',
+        'default_value' => '',
+        'toolbar' => 'full',
+        'media_upload' => 'yes',
+      ),
     ),
     'location' => array (
       array (

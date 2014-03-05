@@ -79,6 +79,10 @@ the_post();
   <?php if (get_field('related_testimonials')): ?>
     <li><a href="#testimonials" data-toggle="tab">Testimonials</a></li>
   <?php endif ?>
+
+  <?php if (get_field('terms_conditions')): ?>
+    <li><a href="#terms" data-toggle="tab">Terms &amp; Conditions</a></li>
+  <?php endif ?>
 </ul>
 
 <!-- Tab panes -->
@@ -179,6 +183,13 @@ the_post();
           </footer>
         </blockquote>
       <?php endforeach ?>
+    </div>
+  <?php endif ?>
+
+  <?php if (get_field('terms_conditions')): ?>
+    <div class="tab-pane fade" id="terms">
+      <h2>Terms &amp; Conditions</h2>
+      <div><?php echo get_field('terms_conditions') ?></div>
     </div>
   <?php endif ?>
 
