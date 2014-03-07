@@ -398,6 +398,13 @@ if(function_exists("register_field_group"))
           'order_no' => 0,
           'group_no' => 0,
         ),
+        array (
+          'param' => 'page_type',
+          'operator' => '!=',
+          'value' => 'front_page',
+          'order_no' => 1,
+          'group_no' => 0,
+        ),
       ),
     ),
     'options' => array (
@@ -610,5 +617,109 @@ if(function_exists("register_field_group"))
       ),
     ),
     'menu_order' => 2000,
+  ));
+}
+
+
+// Home Page
+if(function_exists("register_field_group"))
+{
+  register_field_group(array (
+    'id' => 'acf_home-page',
+    'title' => 'Home Page',
+    'fields' => array (
+      array (
+        'key' => 'field_531a40cdbd739',
+        'label' => 'Slides',
+        'name' => 'slides',
+        'type' => 'repeater',
+        'sub_fields' => array (
+          array (
+            'key' => 'field_531a40d4bd73a',
+            'label' => 'Image',
+            'name' => 'image',
+            'type' => 'image',
+            'required' => 1,
+            'column_width' => '',
+            'save_format' => 'object',
+            'preview_size' => 'thumbnail',
+            'library' => 'all',
+          ),
+          array (
+            'key' => 'field_531a40e2bd73b',
+            'label' => 'Link',
+            'name' => 'link',
+            'type' => 'page_link',
+            'instructions' => 'Where should this slide link?',
+            'column_width' => '',
+            'post_type' => array (
+              0 => 'post',
+              1 => 'page',
+            ),
+            'allow_null' => 1,
+            'multiple' => 0,
+          ),
+        ),
+        'row_min' => '',
+        'row_limit' => '',
+        'layout' => 'table',
+        'button_label' => 'Add Slide',
+      ),
+      array (
+        'key' => 'field_531a3fe6682a6',
+        'label' => 'Columns',
+        'name' => 'columns',
+        'type' => 'repeater',
+        'instructions' => 'Displays beneath main content',
+        'sub_fields' => array (
+          array (
+            'key' => 'field_531a3ff9682a7',
+            'label' => 'Title',
+            'name' => 'title',
+            'type' => 'text',
+            'column_width' => '',
+            'default_value' => '',
+            'placeholder' => '',
+            'prepend' => '',
+            'append' => '',
+            'formatting' => 'html',
+            'maxlength' => '',
+          ),
+          array (
+            'key' => 'field_531a402c682a8',
+            'label' => 'Body',
+            'name' => 'body',
+            'type' => 'wysiwyg',
+            'required' => 1,
+            'column_width' => '',
+            'default_value' => '',
+            'toolbar' => 'full',
+            'media_upload' => 'yes',
+          ),
+        ),
+        'row_min' => 4,
+        'row_limit' => 4,
+        'layout' => 'row',
+        'button_label' => 'Add Column',
+      ),
+    ),
+    'location' => array (
+      array (
+        array (
+          'param' => 'page_type',
+          'operator' => '==',
+          'value' => 'front_page',
+          'order_no' => 0,
+          'group_no' => 0,
+        ),
+      ),
+    ),
+    'options' => array (
+      'position' => 'normal',
+      'layout' => 'default',
+      'hide_on_screen' => array (
+      ),
+    ),
+    'menu_order' => -1,
   ));
 }

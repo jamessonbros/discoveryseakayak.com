@@ -1,29 +1,32 @@
+<?php 
+$slides = get_field('slides');
+?>
 
 <div id="carousel-front-page" class="carousel slide" data-ride="carousel">
 
   <ol class="carousel-indicators">
-    <li data-target="#carousel-front-page" data-slide-to="0" class="active"></li>
-    <li data-target="#carousel-front-page" data-slide-to="1"></li>
-    <li data-target="#carousel-front-page" data-slide-to="2"></li>
+    <?php for ($i = 0; $i < count($slides); $i++): ?>
+      <li data-target="#carousel-front-page" data-slide-to="<?php echo $i ?>" <?php echo $i == 0 ? 'class="active"' : '' ?>></li>
+    <?php endfor ?>
   </ol>
 
   <div class="carousel-inner">
-    <div class="item active">
+    <?php $i = 0; ?>
+    <?php foreach ($slides as $slide): ?>
+    <div class="item <?php echo $i == 0 ? 'active' : '' ?>">
       <div class="container">
-        <img src="/wp-content/themes/dsk/assets/img/slide1.jpg" alt="" class="img-responsive">
+        <?php if ($slide['link']): ?>
+          <a href="<?php echo $slide['link'] ?>">
+        <?php endif ?>
+          <img src="<?php echo $slide['image']['sizes']['slide'] ?>" alt="<?php echo $slide['image']['alt'] ?>" title="<?php echo $slide['image']['title'] ?>" class="img-responsive">
+        <?php if ($slide['link']): ?>
+          </a>
+        <?php endif ?>
       </div>
     </div>
-    <div class="item">
-      <div class="container">
-        <img src="/wp-content/themes/dsk/assets/img/slide2.jpg" alt="" class="img-responsive">
-      </div>
-    </div>
-    <div class="item">
-      <div class="container">
-        <img src="/wp-content/themes/dsk/assets/img/slide3.jpg" alt="" class="img-responsive">
-      </div>
-    </div>
+    <?php $i++; endforeach; ?>
   </div>
+  <!-- /carousel-inner -->
 
   <a href="#carousel-front-page" class="left carousel-control" data-slide="prev">
     <span class="glyphicon glyphicon-chevron-left"></span>
