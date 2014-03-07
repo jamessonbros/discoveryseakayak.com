@@ -12,7 +12,7 @@ $columns = get_field('columns');
 <!-- /row -->
 
 <?php if (count($columns)): ?>
-  <div class="row">
+  <div class="row home-columns">
     <?php foreach ($columns as $column): ?>
       <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
         <?php if ($column['title']): ?>
