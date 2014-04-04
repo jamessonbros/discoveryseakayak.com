@@ -5,11 +5,10 @@
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
       <div class="footer-socials">
-        #socials
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-      <p class="credit">Site by 
+      <p class="credit"> 
         <a href="http://www.groovywebdesign.com/" title="We make great websites!" target="_blank">
           <img src="http://wpassets.groovywebdesign.com/gwd-foot-logo-white.png" alt="Groovy Web Design">
         </a>
