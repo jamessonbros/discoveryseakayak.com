@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Theme-specific custom fields
 
 // Trip Specs
@@ -110,7 +110,7 @@ if(function_exists("register_field_group"))
         <li>It’s nice to have a pair of shoes you do not mind getting wet. There are times depending on the tide that we may have to step into the water to get in the kayaks.</li>
         <li>Sunscreen, Sunglasses, Hat and a Camera are all highly recommended.</li>
       </ul>
-  
+
       <p class="lead">If you forget any of the items, not to worry. Discovery Sea Kayaks is also a fully stocked outdoor retail shop. We can fit you with any items you may have left behind, or don\'t feel like lugging on your trip.</p>',
         'toolbar' => 'full',
         'media_upload' => 'no',
@@ -722,4 +722,85 @@ if(function_exists("register_field_group"))
     ),
     'menu_order' => -1,
   ));
+}
+
+
+// Multi-day index/landing
+if(function_exists("register_field_group"))
+{
+	register_field_group(array (
+		'id' => 'acf_multi-day-index',
+		'title' => 'Multi-Day Index',
+		'fields' => array (
+			array (
+				'key' => 'field_534c106827390',
+				'label' => 'Trips',
+				'name' => 'trips',
+				'type' => 'repeater',
+				'sub_fields' => array (
+					array (
+						'key' => 'field_534c107427391',
+						'label' => 'Title',
+						'name' => 'title',
+						'type' => 'text',
+						'required' => 1,
+						'column_width' => '',
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'formatting' => 'html',
+						'maxlength' => '',
+					),
+					array (
+						'key' => 'field_534c109527392',
+						'label' => 'Link',
+						'name' => 'link',
+						'type' => 'page_link',
+						'required' => 1,
+						'column_width' => '',
+						'post_type' => array (
+							0 => 'page',
+						),
+						'allow_null' => 0,
+						'multiple' => 0,
+					),
+					array (
+						'key' => 'field_534c10a427393',
+						'label' => 'Description',
+						'name' => 'description',
+						'type' => 'textarea',
+						'required' => 1,
+						'column_width' => '',
+						'default_value' => '',
+						'placeholder' => '',
+						'maxlength' => '',
+						'formatting' => 'br',
+					),
+				),
+				'row_min' => 4,
+				'row_limit' => 4,
+				'layout' => 'row',
+				'button_label' => 'Add Trip',
+			),
+		),
+		'location' => array (
+			array (
+				array (
+					'param' => 'page_template',
+					'operator' => '==',
+					'value' => 'template-multiday.php',
+					'order_no' => 0,
+					'group_no' => 0,
+				),
+			),
+		),
+		'options' => array (
+			'position' => 'normal',
+			'layout' => 'default',
+			'hide_on_screen' => array (
+			),
+		),
+		'menu_order' => 0,
+	));
 }
