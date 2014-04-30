@@ -4,7 +4,7 @@ Plugin Name: Fluid Video Embeds
 Plugin URI: http://wordpress.org/extend/plugins/fluid-video-embeds/
 Description: Makes your YouTube and Vimeo auto-embeds fluid/full width.
 Author: jamie3d
-Version: 1.2.3
+Version: 1.2.4
 Author URI: http://jamie3d.com
 */
 
@@ -32,6 +32,7 @@ class FluidVideoEmbed{
             'fve_max_width' => '0',
             'fve_alignment' => 'left',
             'fve_responsive_hyperlink' => false,
+            'fve_force_youtube_16_9' => false,
             'fve_responsive_hyperlink_mq' => '@media screen and (max-device-width: 768px)',
             );
 
@@ -55,6 +56,12 @@ class FluidVideoEmbed{
         $this->fve_responsive_hyperlink_mq = (string) $this->get_option( 'fve_responsive_hyperlink_mq' );
         if ( empty( $this->fve_responsive_hyperlink_mq ) ) {
             $this->fve_responsive_hyperlink_mq = $this->defaults['fve_responsive_hyperlink_mq'];
+        }
+
+        // Autoload the Responsive Hyperlink options
+        $this->fve_force_youtube_16_9 = (bool) $this->get_option( 'fve_force_youtube_16_9' );
+        if ( empty( $this->fve_force_youtube_16_9 ) ) {
+            $this->fve_force_youtube_16_9 = $this->defaults['fve_force_youtube_16_9'];
         }
 
         $this->iframe_before_src = '<iframe src="';
@@ -368,20 +375,20 @@ class FluidVideoEmbed{
                      * video is widescreen-ish. So this is likely the best we can do for now.
                      */
                     $wrapper_padding = '75%';
-                    if( $this->meta['aspect'] == 'widescreen' ) {
+                    if( isset( $this->meta['aspect'] ) && $this->meta['aspect'] == 'widescreen' ) {
                         $wrapper_padding = '56.25%';
                     }
 
                     $iframe_url = 'http://www.youtube.com/embed/' . $this->meta['id'] . '?wmode=transparent&modestbranding=1&autohide=1&showinfo=0&rel=0';
                     $permalink = 'http://www.youtube.com/watch?v=' . $this->meta['id'];
-                    $thumbnail = $this->meta['full_image'];
+                    $thumbnail = isset( $this->meta['full_image'] ) ? $this->meta['full_image'] : '';
                     break;
                     case 'vimeo':
                     $wrapper_padding = ( $this->meta['aspect'] * 100 ) . '%';
 
                     $iframe_url = 'http://player.vimeo.com/video/' . $this->meta['id'] . '?portrait=0&byline=0&title=0';
                     $permalink = 'http://vimeo.com/' . $this->meta['id'];
-                    $thumbnail = $this->meta['full_image'];
+                    $thumbnail = isset( $this->meta['full_image'] ) ? $this->meta['full_image'] : '';
                     break;
                 }
 
@@ -628,6 +635,9 @@ class FluidVideoEmbed{
             if( !empty( $response_json ) ) {
                 switch( $service ){
                     case 'youtube':
+
+                    if( $response_json->pageInfo->totalResults == 0 ) break;
+
                     $video_meta['title'] = $response_json->items[0]->snippet->title;
                     $video_meta['permalink'] = 'http://www.youtube.com/watch?v=' . $video_id;
                     $video_meta['description'] = $response_json->items[0]->snippet->title;
@@ -637,6 +647,11 @@ class FluidVideoEmbed{
                     $video_meta['aspect'] = 'widescreen';
                     if( isset( $response_json->items[0]->contentDetails->definition ) ) {
                         $video_meta['aspect'] = ( $response_json->items[0]->contentDetails->definition === 'hd' ) ? 'widescreen' : 'standard';
+                    }
+
+                    // Allow the widescreen option to be overriden
+                    if( $this->fve_force_youtube_16_9 ) {
+                        $video_meta['aspect'] = 'widescreen';
                     }
                     $video_meta['duration'] = $response_json->items[0]->contentDetails->duration;
 

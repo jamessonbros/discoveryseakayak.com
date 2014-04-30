@@ -3,7 +3,7 @@ Contributors: jamie3d
 Donate Link: http://goo.gl/JTYF2
 Tags: video, youtube, vimeo, fluid, flexible, elastic, responsive, 100%, full width, embed, oEmbed
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: trunk
 License: GPLv3
 
@@ -62,6 +62,10 @@ You can't get the video dimensions (and thus aspect ratio) without doing some sl
 4. It also handles different aspect ratio videos from Vimeo quite gracefully. The only circumstance where I've seen black bars is when YouTube serves a 320p or 480p video for mobile.
 
 == Changelog ==
+= 1.2.4 =
+* Fixes a few PHP notices due to empty API results.
+* Adds a new YouTube option that allows you to force the 16:9 ratio.
+
 = 1.2.3 =
 * Upgraded to version 3 of the YouTube API.
 * Fixes a previous issue that was introduced around version 1.0.3 when the YouTube version 2 API became unreliable.
@@ -99,6 +103,9 @@ Initial release
 
 
 == Upgrade Notice ==
+= 1.2.4 =
+* Adds a new YouTube option that allows you to force the 16:9 ratio.
+
 = 1.2.3 =
 * Fixes bug with 4:3 YouTube aspect ratio (SD) videos.
 

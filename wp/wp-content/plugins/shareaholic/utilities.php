@@ -323,6 +323,11 @@ class ShareaholicUtilities {
       self::update_options(array('disable_og_tags' => 'off'));
       self::update_options(array('metakey_6to7_upgraded' => 'true'));
     }
+    
+    $version = ShareaholicUtilities::get_version();
+    if (!empty($version)){
+      ShareaholicUtilities::clear_cache();
+    }
     // any other things that need to be updated
   }
 
@@ -663,7 +668,7 @@ class ShareaholicUtilities {
           );
 
           ShareaholicUtilities::turn_on_locations($turn_on, $turn_off);
-
+          ShareaholicUtilities::clear_cache();
         } else {
           ShareaholicUtilities::log_bad_response('FailedToCreateApiKey', $response);
         }
@@ -947,8 +952,7 @@ class ShareaholicUtilities {
    *
    * @return array Where header => header value
    */
-  public static function add_header_xua($headers)
-  {
+  public static function add_header_xua($headers) {
       if(!isset($headers['X-UA-Compatible'])) {
         $headers['X-UA-Compatible'] = 'IE=edge,chrome=1';
       }
@@ -959,9 +963,31 @@ class ShareaholicUtilities {
    * Draws xua meta tag
    *
    */
-  public static function draw_meta_xua()
-  {
+  public static function draw_meta_xua() {
     echo '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">';
+  }
+  
+  /*
+   * Clears cache created by caching plugins like W3 Total Cache
+   *
+   */
+  public static function clear_cache() {
+    // W3 Total Cache plugin
+  	if (function_exists('w3tc_pgcache_flush')) {
+  		w3tc_pgcache_flush(); 
+  	}
+  	// WP Super Cache
+    if (function_exists('wp_cache_clear_cache')) {
+      wp_cache_clear_cache();
+    }
+	  // Hyper Cache
+	  if (function_exists('hyper_cache_invalidate')) {
+	    hyper_cache_invalidate();
+	  }
+	  // Quick Cache
+	  if (function_exists('auto_clear_cache')) {
+  	  auto_clear_cache();
+	  }
   }
 
   /**
@@ -1034,7 +1060,7 @@ class ShareaholicUtilities {
     $has_important_services = true;
     // Does it have counts for twtr, fb, linkedin, pinterest, and delicious?
     foreach (array('twitter', 'facebook', 'linkedin', 'pinterest', 'delicious') as $service) {
-      if (!isset($response['body']['data'][$service]) || !is_numeric($response['body']['data'][$service]) || $response['body']['data'][$service] <= 0) {
+      if (!isset($response['body']['data'][$service]) || !is_numeric($response['body']['data'][$service])) {
         $has_important_services = false;
       }
     }
