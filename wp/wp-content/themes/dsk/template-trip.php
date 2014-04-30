@@ -68,9 +68,11 @@ the_post();
     <li><a href="#itinerary" data-toggle="tab">Itinerary</a></li>
   <?php endif ?>
 
+  <?php /*
   <?php if (get_field('gallery')): ?>
     <li><a href="#photos" data-toggle="tab">Trip Photos</a></li>
   <?php endif ?>
+  */ ?>
 
   <?php if (get_field('related_faqs')): ?>
     <li><a href="#faqs" data-toggle="tab">FAQs</a></li>
@@ -102,8 +104,19 @@ the_post();
         </div>
       <?php endforeach ?>
       </div>
-
     <?php endif ?>
+
+    <?php $photos = get_field('gallery') ?>
+    <?php if (count($photos)): ?>
+      <div class="photos-container">
+        <h2>Trip Photos</h2>
+        <?php $gallery_array = array() ?>
+        <?php foreach ($photos as $photo) $gallery_array[] = $photo['id']; ?>
+        <?php echo do_shortcode('[gallery ids="' . join(',', $gallery_array) . '"]') ?>
+      </div>
+      <!-- /photos -->
+    <?php endif ?>
+
   </div>
   <!-- /#info -->
 
@@ -131,6 +144,7 @@ the_post();
     <!-- /itinerary -->
   <?php endif ?>
 
+  <?php /*
   <?php $photos = get_field('gallery') ?>
   <?php if (count($photos)): ?>
     <div class="tab-pane fade" id="photos">
@@ -149,6 +163,7 @@ the_post();
     </div>
     <!-- /photos -->
   <?php endif ?>
+  */ ?>
 
 
   <?php $faqs = get_field('related_faqs') ?>
