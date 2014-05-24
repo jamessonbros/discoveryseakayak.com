@@ -3,7 +3,7 @@ node_modules
 
 # Configs
 wp-config.php
-wp-cli*
+wp-cli.local.yml
 
 # Uploaded
 /wp/media
