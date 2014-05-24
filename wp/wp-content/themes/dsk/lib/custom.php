@@ -3,6 +3,12 @@
  * Custom functions
  */
 
+
+// Global vars
+define('DSK_PHONE_TOLL_FREE_URL', '+18664612559');
+define('DSK_PHONE_TOLL_FREE', '(866) 461-2559');
+
+
 // load favicon/apple icons
 add_action('wp_head', 'dsk_load_icons');
 function dsk_load_icons()

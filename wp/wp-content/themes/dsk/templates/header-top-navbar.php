@@ -14,6 +14,14 @@
           wp_nav_menu(array('theme_location' => 'primary_navigation', 'menu_class' => 'nav navbar-nav'));
         endif;
       ?>
+      <div class="navbar-right">
+        <ul class="nav navbar-nav">
+          <li><a href="tel:<?php echo DSK_PHONE_TOLL_FREE_URL ?>">
+            <span class="glyphicon glyphicon-earphone"></span>
+            <?php echo DSK_PHONE_TOLL_FREE ?>
+          </a></li>
+        </ul>
+      </div>
     </nav>
   </div>
 </header>
